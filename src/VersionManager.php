@@ -4,7 +4,7 @@ namespace Mlangeni\Machinjiri\Installer;
 
 class VersionManager {
 
-    public const INSTALLER_VERSION = "1.3.7";
+    public const INSTALLER_VERSION = "1.3.8";
     public const RECOMMENDED_PHP_VERSION = "8.4.0";
 
     public static function installable (): array
@@ -15,6 +15,7 @@ class VersionManager {
                 '^2.2.3' => "machinjiri v2.2.3",
                 '^2.2.4' => "machinjiri v2.2.4",
                 '^2.2.5' => "machinjiri v2.2.5",
+                '^2.2.6' => "machinjiri v2.2.6"
             ]
         ];
     }
