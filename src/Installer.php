@@ -257,8 +257,14 @@ class Installer
         }
     }
 
+    private function normalizeEmail(string $email): string
+    {
+        return strtolower(trim(str_replace([' ', '-', '_', '.'], '', $email)));
+    }
+
     private function writeEnvironmentFile(): void
     {
+        $email = $this->normalizeEmail($this->projectName) . 'com';
         $envContent = <<<ENV
 # -------------------------------------------------
 #   Application configurations                    |
@@ -270,7 +276,7 @@ APP_URL=http://localhost:3000
 APP_KEY=null
 APP_CIPHER=aes-256-gcm
 APP_VERSION=1.0.0
-APP_SUPPORT_EMAIL=admin@{$this->projectName}.com
+APP_SUPPORT_EMAIL=admin@{$email}
 
 # ------------------------------------------------
 # Client Site Forgery (CSRF Token Name)          |
@@ -331,9 +337,9 @@ MAIL_MAILER=smtp
 MAIL_HOST=smtp.mailtrap.io
 MAIL_PORT=2525
 MAIL_ENCRYPTION=tls
-MAIL_USERNAME=someone@{$this->projectName}.com
+MAIL_USERNAME=someone@{$email}
 MAIL_PASSWORD=null
-MAIL_FROM_ADDRESS=no-reply@{$this->projectName}.com
+MAIL_FROM_ADDRESS=noreply@example.com
 MAIL_FROM_NAME={$this->projectName}
 
 # -------------------------------------------------
