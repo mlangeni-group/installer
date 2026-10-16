@@ -11,10 +11,10 @@ class Resources
 <html>
 <head>
     <title>Error <?= $code ?? 500 ?></title>
-    <?php View::yield('styles'); ?>
+    @yield('styles')
 </head>
 <body>
-    <?php View::yield('content'); ?>
+    @yield('content')
 </body>
 </html>
 PHP;
@@ -22,9 +22,10 @@ PHP;
     
     public static function notFoundViewTemplate() { return <<<'PHP'
 <?php use Mlangeni\Machinjiri\Core\Views\View; ?>
-<?php View::extend('layouts.error'); ?>
 
-<?php View::section('content'); ?>
+@extends('layouts.error')
+
+@section('content')
 <div class="error-container">
     <div class="error-header">
         <div class="error-code">404 - Not Found</div>
@@ -35,9 +36,9 @@ PHP;
         <div class="error-actions"><a href="/" class="btn-primary">Return Home</a></div>
     </div>
 </div>
-<?php View::endSection(); ?>
+@endsection
 
-<?php section('styles') ?>
+@section('styles')
 <style>
 * {
     margin: 0;
@@ -202,7 +203,7 @@ body {
     }
 }
 </style>
-<?php View::endSection() ?>
+@endsection
 PHP;
     }
 }

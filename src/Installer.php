@@ -21,7 +21,7 @@ class Installer
     private string $projectName;
     private string $projectDir;
     private array $options;
-    private $progressCallback = null;
+    private mixed $progressCallback = null;
     private ?ProjectValidator $validator = null;
     private ?InstallerLogger $logger = null;
     private ?InstallationManager $manager = null;
@@ -264,7 +264,7 @@ class Installer
 
     private function writeEnvironmentFile(): void
     {
-        $email = $this->normalizeEmail($this->projectName) . 'com';
+        $email = $this->normalizeEmail($this->projectName) . '.com';
         $envContent = <<<ENV
 # -------------------------------------------------
 #   Application configurations                    |

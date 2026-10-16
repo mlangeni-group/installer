@@ -93,9 +93,10 @@ PHP;
 
   private static function BlogTemplate(): string { return <<<'PHP'
 <?php use Mlangeni\Machinjiri\Core\Views\View; ?>
-<% extend 'layouts/blog' %>
 
-<% section('content') %>
+@extends('layouts.blog')
+
+@section('content')
 <nav class="navbar fixed-top navbar-expand-lg" id="mainNavbar">
   <div class="container">
       <a class="navbar-brand" href="#">
@@ -466,7 +467,7 @@ PHP;
     <i class="bi bi-arrow-up"></i>
 </button>
 <div class="custom-toast" id="customToast"></div>
-<% endsection %>
+@endsection
 PHP;
   }
   
@@ -486,10 +487,11 @@ PHP;
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
     
-    <?php View::style('css/main.css') ?>
+    {{ style('css/main.css') }}
 </head>
 <body>
-  <?php View::yield('content')?>
+  
+  @yield('content')
   
   <!-- Bootstrap 5 JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
@@ -497,7 +499,8 @@ PHP;
   <!-- jQuery -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js">
   </script>
-  <?php View::script('js/app.js')?>
+
+  {{ script('js/app.js') }}
 </body>
 </html>
 PHP;
