@@ -1,6 +1,6 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer;
+namespace Machinjiri\Installer;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -65,7 +65,7 @@ class InstallationSummary
 
         $this->io->newLine();
         $this->io->writeln('2. Start the development server (if not already started:');
-        $this->io->writeln('   <fg=yellow>php artisan server:start</>');
+        $this->io->writeln('   <fg=yellow>php artisan run:dev</>');
 
         $this->io->newLine();
         $this->io->writeln('3. Open your browser and visit:');

@@ -1,9 +1,9 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer;
+namespace Machinjiri\Installer;
 use \Exception;
-use Mlangeni\Machinjiri\Installer\StarterKits\DefaultKit;
-use Mlangeni\Machinjiri\Installer\StarterKits\Blog;
+use Machinjiri\Installer\StarterKits\DefaultKit;
+use Machinjiri\Installer\StarterKits\Blog;
 
 final class StarterkitManager
 {

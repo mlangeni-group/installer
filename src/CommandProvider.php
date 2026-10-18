@@ -1,9 +1,9 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer;
+namespace Machinjiri\Installer;
 
 use Composer\Plugin\Capability\CommandProvider as CommandProviderCapability;
-use Mlangeni\Machinjiri\Installer\Commands\InstallCommand;
+use Machinjiri\Installer\Commands\InstallCommand;
 
 class CommandProvider implements CommandProviderCapability
 {

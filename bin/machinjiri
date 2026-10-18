@@ -1,12 +1,18 @@
 #!/usr/bin/env php
+
 <?php
+
 if (file_exists(__DIR__.'/../../../autoload.php')) {
     require __DIR__.'/../../../autoload.php';
 } else {
     require __DIR__.'/../vendor/autoload.php';
 }
+
 use Symfony\Component\Console\Application;
-use Mlangeni\Machinjiri\Installer\Commands\InstallCommand;
-$terminal = new Application('Machinjiri Installer', '1.4.1');
-$terminal->add(new InstallCommand());
+use Machinjiri\Installer\Commands\InstallCommand;
+
+$terminal = new Application('Machinjiri Installer', '1.4.2');
+
+$terminal->addCommand(new InstallCommand());
+
 $terminal->run();

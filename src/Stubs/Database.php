@@ -1,14 +1,14 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer\Stubs;
+namespace Machinjiri\Installer\Stubs;
 
 class Database 
 {
     public static function dbCachePrefetchTemplate() { return <<<'PHP'
 <?php
 
-use Mlangeni\Machinjiri\Core\Database\Builders\QueryBuilder;
-use Mlangeni\Machinjiri\Core\Database\Caching\PrefetchManager;
+use Machinjiri\Core\Database\Builders\QueryBuilder;
+use Machinjiri\Core\Database\Caching\PrefetchManager;
 
 return [
     /**

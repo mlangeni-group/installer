@@ -1,6 +1,6 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer\Stubs;
+namespace Machinjiri\Installer\Stubs;
 
 class ConfigFiles {
 
@@ -60,7 +60,7 @@ return [
             'sandbox' => env('AFRICASTALKING_SANDBOX', true),
             
             // Custom transport class (optional - overrides default)
-            'transportClass' => Mlangeni\Machinjiri\Core\Transport\SMS\Transports\AfricasTalkingTransport::class,
+            'transportClass' => Machinjiri\Core\Transport\SMS\Transports\AfricasTalkingTransport::class,
         ],
     ],
 
@@ -283,7 +283,7 @@ return [
                 /* Can use database, ldap and OAuth */
                 'driver' => 'database',
                 /* Define your custom model */
-                'model' => \Mlangeni\Machinjiri\Facade\Authentication\Models\User::class,
+                'model' => \Machinjiri\Facade\Authentication\Models\User::class,
             ],
             /*
             |--------------------------------------------------------------------------
@@ -697,7 +697,7 @@ PHP;
     public static function routingConfigFileTemplate () { return <<<'PHP'
 <?php
 
-use Mlangeni\Machinjiri\Core\Routing\RoutingConfig;
+use Machinjiri\Core\Routing\RoutingConfig;
 
 return new RoutingConfig(
     cacheFile: storage_path('cache/routes.cache'),

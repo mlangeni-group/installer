@@ -1,6 +1,6 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer\Stubs;
+namespace Machinjiri\Installer\Stubs;
 
 class Root 
 {
@@ -47,13 +47,13 @@ ENV;
  * @package    Machinjiri
  * @subpackage Core\Artisans\Terminal
  *
- * @see        \Mlangeni\Machinjiri\Core\Artisans\Terminal\Terminal
+ * @see        \Machinjiri\Core\Artisans\Terminal\Terminal
  */
 
 require __DIR__ . '/vendor/autoload.php';
 
 // Initialize and run the Machinjiri artisan console
-(new \Mlangeni\Machinjiri\Core\Artisans\Terminal\Terminal())->run();
+(new \Machinjiri\Core\Artisans\Terminal\Terminal())->run();
 PHP;
     }
 

@@ -1,18 +1,18 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer;
+namespace Machinjiri\Installer;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use \RuntimeException;
-use Mlangeni\Machinjiri\Installer\StarterkitManager;
-use Mlangeni\Machinjiri\Installer\Stubs\ConfigFiles;
-use Mlangeni\Machinjiri\Installer\Stubs\Database;
-use Mlangeni\Machinjiri\Installer\Stubs\Root;
-use Mlangeni\Machinjiri\Installer\Stubs\Resources;
-use Mlangeni\Machinjiri\Installer\Stubs\Publics;
-use Mlangeni\Machinjiri\Installer\Stubs\Bootstrap;
+use Machinjiri\Installer\StarterkitManager;
+use Machinjiri\Installer\Stubs\ConfigFiles;
+use Machinjiri\Installer\Stubs\Database;
+use Machinjiri\Installer\Stubs\Root;
+use Machinjiri\Installer\Stubs\Resources;
+use Machinjiri\Installer\Stubs\Publics;
+use Machinjiri\Installer\Stubs\Bootstrap;
 
 class Installer
 {
@@ -207,12 +207,12 @@ class Installer
             'autoload' => [
                 'psr-4' => [
                     'App\\' => 'app/',
-                    'Mlangeni\\Machinjiri\\Database\\' => "database/",
+                    '\Machinjiri\\Database\\' => "database/",
                 ]
             ],
             'autoload-dev' => [
                 'psr-4' => [
-                    'Mlangeni\\Machinjiri\\Tests\\' => 'tests/',
+                    '\Machinjiri\\Tests\\' => 'tests/',
                 ],
             ],
             'scripts' => [
