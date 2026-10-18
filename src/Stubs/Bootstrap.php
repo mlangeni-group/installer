@@ -32,12 +32,11 @@ if (!is_file(\$composerAutoload)) {
 require \$composerAutoload;
 
 /* Import Application  */
-use Machinjiri\Core\Machinjiri as App;
-use Machinjiri\Core\Container;
-use Machinjiri\Core\Artisans\Helpers\HelperLoader;
+use Mlangeni\Machinjiri\Core\Machinjiri as App;
+use Mlangeni\Machinjiri\Core\Container;
 
 // load app helper methods
-HelperLoader::getHelperMethods();
+\Mlangeni\Machinjiri\Core\Artisans\Helpers\HelperLoader::getHelperMethods();
 
 // Check if application is being accessed from Web or Artisan CLI Interface
 if (PHP_SAPI === "cli" || defined('STDIN')) {
