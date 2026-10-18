@@ -7,8 +7,8 @@ class Database
     public static function dbCachePrefetchTemplate() { return <<<'PHP'
 <?php
 
-use Machinjiri\Core\Database\Builders\QueryBuilder;
-use Machinjiri\Core\Database\Caching\PrefetchManager;
+use Mlangeni\Machinjiri\Core\Database\Builders\QueryBuilder;
+use Mlangeni\Machinjiri\Core\Database\Caching\PrefetchManager;
 
 return [
     /**

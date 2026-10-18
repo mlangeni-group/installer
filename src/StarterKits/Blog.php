@@ -42,7 +42,7 @@ class Blog
   private static function RoutesTemplate(): string { return <<<'PHP'
 <?php
 
-use Machinjiri\Core\Routing\Router;
+use Mlangeni\Machinjiri\Core\Routing\Router;
 use App\Controllers\BlogController;
 /**
  * Web Routes
@@ -67,9 +67,9 @@ PHP;
 
 namespace App\Controllers;
 
-use Machinjiri\Core\Artisans\Base\AbstractController;
-use Machinjiri\Core\Http\HttpRequest;
-use Machinjiri\Core\Http\HttpResponse;
+use Mlangeni\Machinjiri\Core\Artisans\Base\AbstractController;
+use Mlangeni\Machinjiri\Core\Http\HttpRequest;
+use Mlangeni\Machinjiri\Core\Http\HttpResponse;
 
 class BlogController extends AbstractController
 {
@@ -92,7 +92,7 @@ PHP;
   }
 
   private static function BlogTemplate(): string { return <<<'PHP'
-<?php use Machinjiri\Core\Views\View; ?>
+<?php use Mlangeni\Machinjiri\Core\Views\View; ?>
 
 @extends('layouts.blog')
 
@@ -472,7 +472,7 @@ PHP;
   }
   
   private static function LayoutTemplate() { return <<<'PHP'
-<?php use Machinjiri\Core\Views\View; ?>
+<?php use Mlangeni\Machinjiri\Core\Views\View; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

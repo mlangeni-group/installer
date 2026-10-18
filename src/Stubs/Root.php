@@ -45,15 +45,17 @@ ENV;
  *             is strictly prohibited.
  *
  * @package    Machinjiri
- * @subpackage Core\Artisans\Terminal
+ * @subpackage Mlangeni\Machinjiri\Core\Artisans\Terminal
  *
- * @see        \Machinjiri\Core\Artisans\Terminal\Terminal
+ * @see        Mlangeni\Machinjiri\Core\Artisans\Terminal\Terminal
  */
 
 require __DIR__ . '/vendor/autoload.php';
 
+use Mlangeni\Machinjiri\Core\Artisans\Terminal\Terminal;
+
 // Initialize and run the Machinjiri artisan console
-(new \Machinjiri\Core\Artisans\Terminal\Terminal())->run();
+(new Terminal())->run();
 PHP;
     }
 
