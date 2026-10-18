@@ -1,6 +1,6 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer;
+namespace Machinjiri\Installer;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
@@ -29,7 +29,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface, Capable
     public function getCapabilities()
     {
         return [
-            'Composer\Plugin\Capability\CommandProvider' => 'Mlangeni\Machinjiri\Installer\CommandProvider',
+            'Composer\Plugin\Capability\CommandProvider' => 'Machinjiri\Installer\CommandProvider',
         ];
     }
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer;
+namespace Machinjiri\Installer;
 
 use Symfony\Component\Console\Application;
-use Mlangeni\Machinjiri\Installer\VersionManager;
+use Machinjiri\Installer\VersionManager;
 
 class ComposerScripts
 {
@@ -27,7 +27,7 @@ if (file_exists(__DIR__.'/../../../autoload.php')) {
     require __DIR__.'/../vendor/autoload.php';
 }
 use Symfony\Component\Console\Application;
-use Mlangeni\Machinjiri\Installer\Commands\InstallCommand;
+use Machinjiri\Installer\Commands\InstallCommand;
 $terminal = new Application('Machinjiri Installer', $version);
 $terminal->add(new InstallCommand());
 $terminal->run();

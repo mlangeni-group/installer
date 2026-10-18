@@ -1,6 +1,6 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer\Commands;
+namespace Machinjiri\Installer\Commands;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -10,12 +10,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
-use Mlangeni\Machinjiri\Installer\InstallationManager;
-use Mlangeni\Machinjiri\Installer\Installer;
-use Mlangeni\Machinjiri\Installer\InstallerLogger;
-use Mlangeni\Machinjiri\Installer\InstallationSummary;
-use Mlangeni\Machinjiri\Installer\StarterkitManager;
-use Mlangeni\Machinjiri\Installer\VersionManager;
+use Machinjiri\Installer\InstallationManager;
+use Machinjiri\Installer\Installer;
+use Machinjiri\Installer\InstallerLogger;
+use Machinjiri\Installer\InstallationSummary;
+use Machinjiri\Installer\StarterkitManager;
+use Machinjiri\Installer\VersionManager;
 
 
 class InstallCommand extends Command

@@ -1,6 +1,6 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer\Stubs;
+namespace Machinjiri\Installer\Stubs;
 
 class Bootstrap {
     
@@ -32,9 +32,9 @@ if (!is_file(\$composerAutoload)) {
 require \$composerAutoload;
 
 /* Import Application  */
-use Mlangeni\Machinjiri\Core\Machinjiri as App;
-use Mlangeni\Machinjiri\Core\Container;
-use Mlangeni\Machinjiri\Core\Artisans\Helpers\HelperLoader;
+use Machinjiri\Core\Machinjiri as App;
+use Machinjiri\Core\Container;
+use Machinjiri\Core\Artisans\Helpers\HelperLoader;
 
 // load app helper methods
 HelperLoader::getHelperMethods();

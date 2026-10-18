@@ -1,6 +1,6 @@
 <?php
 
-namespace Mlangeni\Machinjiri\Installer\Stubs;
+namespace Machinjiri\Installer\Stubs;
 
 class Publics
 {

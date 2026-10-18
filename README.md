@@ -4,16 +4,18 @@ A Composer plugin and CLI installer for scaffolding new Machinjiri PHP applicati
 
 ## What’s new
 
-The installer now supports a more complete project setup experience:
+The installer has been expanded into a more robust project bootstrap workflow for Machinjiri applications. Recent improvements include:
 
-- interactive project creation prompts
-- validation for PHP, Composer, extensions, disk space, and writable directories
-- dry-run support for previewing changes
+- interactive project creation with guided prompts
+- strict environment validation for PHP, Composer, required extensions, disk space, and writable directories
+- safe install flows with `--dry-run`, `--force`, and `--keep-on-error`
 - starter kit selection (`default` and `blog`)
-- database selection (`sqlite` and `mysql`)
-- optional Git initialization
-- automatic `.env` generation with secure permissions
-- installation logging and post-install summaries
+- database template selection (`sqlite` and `mysql`)
+- project version selection via `--m-version` and current Machinjiri compatibility checks
+- optional Git initialization and initial commit support
+- automatic `.env` generation with restricted permissions
+- installation logging via `.installation.log` and a final summary/next-steps output
+- compatibility with Composer plugin execution through the `machinjiri create` / `machinjiri new` commands
 
 ## Requirements
 
@@ -22,6 +24,8 @@ Before running the installer, make sure your environment meets these requirement
 - PHP 8.4 or newer
 - Composer 2.x
 - Required PHP extensions: `json`, `mbstring`, `openssl`, `zip`, `pdo`, `tokenizer`, and `ctype`
+
+The current installer release targets Machinjiri framework versions in the `2.2.x` line and is prepared for the latest 8.4-compatible setup.
 
 ## Installation
 
@@ -91,28 +95,40 @@ Options:
 machinjiri create
 ```
 
-### 2. Non-interactive install with SQLite
+### 2. Install a specific Machinjiri framework version
+
+```bash
+machinjiri create my-app --m-version='^2.2.8'
+```
+
+### 3. Non-interactive install with SQLite
 
 ```bash
 machinjiri create my-app --no-interaction --database=sqlite --starter=default
 ```
 
-### 3. Create a blog starter app
+### 4. Create a blog starter app
 
 ```bash
 machinjiri create my-blog --starter=blog --database=mysql
 ```
 
-### 4. Preview installation without creating files
+### 5. Preview installation without creating files
 
 ```bash
 machinjiri create my-app --dry-run --verbose
 ```
 
-### 5. Overwrite an existing directory
+### 6. Overwrite an existing directory
 
 ```bash
 machinjiri create my-app --force
+```
+
+### 7. Keep partial files if setup fails
+
+```bash
+machinjiri create my-app --keep-on-error
 ```
 
 ## What the installer creates
@@ -264,7 +280,7 @@ The installer supports non-interactive mode for automation:
 # GitLab CI example
 before_script:
   - composer global require machinjiri/installer
-  - export PATH="$PATH:$HOME/.config/vendor/bin:$PATH"
+  - export PATH="$PATH:$HOME/.config/composer/vendor/bin:$PATH"
   - machinjiri create ${CI_PROJECT_NAME} --no-interaction --force --no-dev
   - cd ${CI_PROJECT_NAME}
   - composer install --no-dev --no-interaction
@@ -274,17 +290,14 @@ before_script:
 
 ```bash
 # Clone the repository
-git clone https://github.com/preciouslyson/machinjiri-installer.git
-cd machinjiri-installer
+git clone https://github.com/mlangeni-group/installer.git
+cd installer
 
 # Install dependencies
 composer install
 
-# Run tests
-composer test
-
-# Test the installer locally
-php bin/machinjiri create test-app
+# Smoke-test the installer locally
+php bin/machinjiri create test-app --no-interaction --database=sqlite --starter=default
 ```
 
 ## License
