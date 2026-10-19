@@ -6,7 +6,7 @@ class Resources
 {
 
     public static function notFoundLayoutTemplate() { return <<<'PHP'
-<?php use Mlangeni\Machinjiri\Core\Views\View; ?>
+<?php use Machinjiri\Core\Views\View; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +21,7 @@ PHP;
     }
     
     public static function notFoundViewTemplate() { return <<<'PHP'
-<?php use Mlangeni\Machinjiri\Core\Views\View; ?>
+<?php use Machinjiri\Core\Views\View; ?>
 
 @extends('layouts.error')
 
