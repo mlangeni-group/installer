@@ -11,7 +11,7 @@ if (file_exists(__DIR__.'/../../../autoload.php')) {
 use Symfony\Component\Console\Application;
 use Machinjiri\Installer\Commands\InstallCommand;
 
-$terminal = new Application('Machinjiri Installer', '1.4.3');
+$terminal = new Application('Machinjiri Installer', '1.4.4');
 
 $terminal->addCommand(new InstallCommand());
 
