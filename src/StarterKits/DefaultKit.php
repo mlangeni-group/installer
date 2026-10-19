@@ -34,7 +34,7 @@ class DefaultKit
   private static function RoutesTemplate(): string { return <<<'PHP'
 <?php
 
-use Machinjiri\Core\Routing\Router;
+use Mlangeni\Machinjiri\Core\Routing\Router;
 use App\Controllers\HomeController;
 
 /**
@@ -61,9 +61,9 @@ PHP;
 
 namespace App\Controllers;
 
-use Machinjiri\Core\Artisans\Base\AbstractController;
-use Machinjiri\Core\Http\HttpRequest;
-use Machinjiri\Core\Http\HttpResponse;
+use Mlangeni\Machinjiri\Core\Artisans\Base\AbstractController;
+use Mlangeni\Machinjiri\Core\Http\HttpRequest;
+use Mlangeni\Machinjiri\Core\Http\HttpResponse;
 
 class HomeController extends AbstractController
 {
@@ -91,7 +91,7 @@ PHP;
     $appName = self::$options['project_name'];
 
     return <<<HTML
-<?php use Machinjiri\Core\Views\View; ?>
+<?php use Mlangeni\Machinjiri\Core\Views\View; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
