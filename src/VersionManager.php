@@ -4,7 +4,7 @@ namespace Machinjiri\Installer;
 
 class VersionManager {
 
-    public const INSTALLER_VERSION = "1.4.5";
+    public const INSTALLER_VERSION = "1.4.6";
     public const RECOMMENDED_PHP_VERSION = "8.4.0";
 
     public static function installable (): array
@@ -14,7 +14,8 @@ class VersionManager {
             'installable' => [
                 '^2.2.6' => "machinjiri v2.2.6",
                 '^2.2.7' => "machinjiri v2.2.7",
-                '^2.2.8' => "machinjiri v2.2.8"
+                '^2.2.8' => "machinjiri v2.2.8",
+                '^2.2.9' => "machinjiri v2.2.9"
             ]
         ];
     }
