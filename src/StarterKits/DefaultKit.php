@@ -5,10 +5,12 @@ namespace Machinjiri\Installer\StarterKits;
 class DefaultKit
 {
   public static $options = [];
+
   public static function getOptions(array $options): void 
   {
     self::$options = $options;
   }
+
   public static function files(): array 
   {
     return [
@@ -28,6 +30,10 @@ class DefaultKit
           'file' => '/public/src/css/main.css',
           'template' => self::style(),
       ],
+      'layout' => [
+        'file' => '/resources/views/layouts/main.layout.php',
+        'template' => self::layout(),
+      ]
     ];
   }
   
@@ -89,145 +95,107 @@ PHP;
     $version = (self::$options['version'] === '*') ? 'Latest' : self::$options['version'];
     $date = self::$options['date'];
     $appName = self::$options['project_name'];
+    $current = date('Y');
 
     return <<<HTML
 <?php use Mlangeni\Machinjiri\Core\Views\View; ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Machinjiri - Your Cozy Dev Space</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <?php style('css/main.css') ?>
-</head>
-<body>
-<div class="cozy-container">
-    <div class="welcome-header">
-        <div class="cozy-badge">
-            <i class="fas fa-mug-hot"></i> <span>fresh install · ready to create</span> <i class="fas fa-heart"></i>
-        </div>
-        <h1>
-            <i class="fas fa-feather-alt"></i> 
-            You're all set!
-        </h1>
-        <div class="tagline">Machinjiri is installed — cozy, fast, and waiting for your ideas.
-        </div>
+
+@extends('layouts.main')
+
+@section('content')
+<div class="success-card">
+    <!-- Header -->
+    <div class="success-header">
+      <div class="check-icon">
+        <i class="fas fa-check"></i>
+      </div>
+      <h1>
+        Machinjiri - Installation successful!
+        <span>Your app is ready to go.</span>
+      </h1>
     </div>
 
-    <!-- main content grid: system details + components -->
-    <div class="grid-2cols">
-        <div class="card">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.2rem;">
-                <h2 style="font-size: 1.5rem;">App snapshot</h2>
-            </div>
-            <div>
-                <p><strong>App Name:</strong> $appName</p>
-                <p><strong>Framework version:</strong> $version <i class="fas fa-check-circle"></i></p>
-                <p><strong>Created:</strong> 2026-05-18 <i class="fas fa-calendar-alt" ></i></p>
-                <div class="status-chip">
-                    <i class="fas fa-shield-alt"></i> Verified
-                </div>
-            </div>
+    <div class="grid-layout">
+      <div class="details-panel">
+        <div class="panel-title">
+          <i class="fas fa-cube"></i>
+          Installation details
         </div>
 
-        <div class="card">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;">
-                <h2 style="font-size: 1.5rem; font-weight: 600;">Components installed</h2>
-            </div>
-            <ul class="detail-list">
-                <li>Core Framework + CLI</li>
-                <li>Database ORM + Eloquent ORM</li>
-                <li>Service Container</li>
-                <li>Testing Suite ready</li>
-            </ul>
+        <div class="detail-row">
+          <span class="detail-label"><i class="fas fa-tag"></i> App name</span>
+          <span class="detail-value">{$appName}</span>
         </div>
+        <div class="detail-row">
+          <span class="detail-label"><i class="fas fa-code-branch"></i> Version</span>
+          <span class="detail-value">{$version} (stable)</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label"><i class="fas fa-calendar"></i> Created at:</span>
+          <span class="detail-value">{$date}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label"><i class="fas fa-shield-alt"></i> Status</span>
+          <span class="badge-success"><i class="fas fa-check-circle"></i> Verified · Ready</span>
+        </div>
+      </div>
+
+      <div class="tutorial-panel">
+        <div class="panel-title">
+          <i class="fas fa-rocket"></i>
+          Quick Start
+        </div>
+
+        <div class="tutorial-steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <p>Define a Route:</p>
+              <p><code>Router::get('/', 'YourController@index');</code></p>
+              <div class="small-hint"><i class="fas fa-arrow-right"></i> in routes/web.php</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <p>Create a Controller:</p>
+              <p><code>php artisan make:controller ControllerName</code></p>
+              <div class="small-hint"><i class="fas fa-arrow-right"></i> in terminal</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <p>Create a View:</p>
+              <p><code>php artisan view:make ViewName</code></p>
+              <div class="small-hint"><i class="fas fa-arrow-right"></i> in terminal</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Quick actions - catchy & cozy -->
-    <div class="action-grid">
-        <div class="action-item">
-            <div class="action-icon"><i class="fas fa-book-open"></i></div>
-            <h3>Read the docs</h3>
-            <p>Cozy tutorials, API references, and best practices.</p>
-            <a href="https://github.com/preciouslyson/machinjiri" target="_blank" class="cozy-btn outline">Explore docs →</a>
+    <div class="next-steps">
+      <div class="next-steps-left">
+        <i class="fas fa-forward-step"></i>
+        <div class="next-steps-text">
+          <h3>Next steps</h3>
+          <p>Dive into documentation or scaffold your first module.</p>
         </div>
-        <div class="action-item">
-            <div class="action-icon"><i class="fas fa-terminal"></i></div>
-            <h3>CLI power</h3>
-            <p>Generate models, controllers, and migrations.</p>
-            <a href="https://github.com/preciouslyson/machinjiri#Console" class="cozy-btn outline">php artisan list</a>
-        </div>
-        <div class="action-item">
-            <div class="action-icon"><i class="fas fa-users"></i></div>
-            <h3>Community</h3>
-            <p>Join discord, share your cozy creations.</p>
-            <a href="#" class="cozy-btn outline">Join the hub →</a>
-        </div>
-        <div class="action-item">
-            <div class="action-icon"><i class="fas fa-mug-saucer"></i></div>
-            <h3>First app</h3>
-            <p>Build a "Hello, cozy world" in 2 minutes.</p>
-            <a href="#" class="cozy-btn outline">Start building</a>
-        </div>
+      </div>
+      <div class="next-buttons">
+        <a href="https://github.com/mlangeni-group/machinjiri" class="btn btn-primary" style="cursor: default;" target="_blank">
+          <i class="fab fa-github"></i> Read docs
+        </a>
+      </div>
     </div>
 
-    <!-- Next steps - cozy roadmap -->
-    <div class="steps-wrapper">
-        <div class="steps-title">
-            <i class="fas fa-map-signs"></i> your next cozy steps
-        </div>
-        <div class="steps-container">
-            <div class="step-row">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h4>Run the dev server</h4>
-                    <p>In your project root, type <code>php artisan run:dev</code> and visit <code>http://localhost:3000</code></p>
-                </div>
-            </div>
-            <div class="step-row">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h4>Create your first route</h4>
-                    <p>Open <code>routes/web.php</code> and add: <code>Route::get('/welcome', 'HomeController@index', 'welcome');</code></p>
-                </div>
-            </div>
-            <div class="step-row">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h4>Explore the starter kit</h4>
-                    <p>Check <code>/resources/views</code> and customize your cozy layout.</p>
-                </div>
-            </div>
-            <div class="step-row">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h4>Configure .env</h4>
-                    <p>Set database, app URL and enjoy full framework magic.</p>
-                </div>
-            </div>
-        </div>
-        <div style="margin-top: 1.5rem; text-align: center;">
-            <a href="https://github.com/preciouslyson/machinjiri#Introduction" class="cozy-btn"><i class="fas fa-graduation-cap"></i> full getting started guide</a>
-        </div>
-    </div>
-
-    <div class="footer-cozy">
-        <div>
-            <i class="fas fa-heart"></i> Machinjiri — where code meets comfort
-        </div>
-        <div class="footer-links">
-            <a href="https://github.com/preciouslyson/machinjiri"><i class="fab fa-github"></i> GitHub</a>
-            <a href="https://github.com/preciouslyson/machinjiri/support"><i class="fas fa-life-ring"></i> Support</a>
-            <a href="https://github.com/preciouslyson/machinjiri/feedback"><i class="fas fa-comment-dots"></i> Feedback</a>
-        </div>
-        <div>
-            &copy; 2024 - $date
-        </div>
+    <div class="footer-meta">
+      <span><i class="fas fa-check-circle" style="color: #10b981;"></i> &copy; 2025 - {$current} Mlangeni QuarterMaster</span>
+      <span><i class="fas fa-headset"></i> Need help? <a href="mailto:precious.lyson@gmail.com" style="color: var(--color);">precious.lyson@gmail.com</a></span>
     </div>
 </div>
-</body>
-</html>
+@endsection
 HTML;
     }
 
@@ -235,20 +203,22 @@ HTML;
     {
         return <<<'CSS'
 :root {
-    --primary: #E68A5E;
-    --primary-dark: #C4633A;
-    --danger: #D9735A;
-    --warning: #E8A87C;
-    --info: #7F9EB5;
-    --bg: #dedede;
-    --card-bg: #fefefe;
-    --text: #E68A5E;
-    --text-light: #6B5E53;
-    --border: #e2e8f0;
-    --shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
-    --radius: 1.25rem;
-    --radius-sm: 0.165rem;
-    --transition: all 0.2s ease;
+    --bg: #f6f9fc;
+    --success-bg: #ffffff;
+    --color: #1a2b3e;
+    --primary: rgba(109, 91, 208, .10);
+    --secondary: rgb(109, 91, 208);
+    --radius: 1rem;
+    --shadow: 0 25px 50px -12px rgba(0, 20, 30, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f1116;
+        --success-bg: #161922;
+        --color: #c8cdd8;
+    }
+    
 }
 
 * {
@@ -257,365 +227,423 @@ HTML;
     box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #2A2622;
-        --card-bg: #3A3530DD;
-        --text: #F0E6DC;
-        --text-light: #CBBBA8;
-        --border: #5B4F42;
-    }
-}
-
 body {
     background: var(--bg);
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Poppins', 'Roboto', sans-serif;
-    color: var(--text);
-    line-height: 1.5;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 2rem 1.5rem;
-    position: relative;
+    color: var(--color);
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
+.success-card {
+    max-width: 1000px;
     width: 100%;
-    height: 100%;
-    background-image: radial-gradient(#E8DCCC 1px, transparent 1px);
-    background-size: 28px 28px;
-    opacity: 0.3;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.cozy-container {
-    max-width: 1280px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 2;
-}
-
-.welcome-header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-    animation: fadeSlideUp 0.6s ease-out;
-    background: var(--card-bg);
-    padding: 1rem;
-    border: 1px solid var(--border);
+    background: var(--success-bg);
     border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 2.5rem;
+    transition: all 0.2s ease;
 }
 
-.cozy-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--card-bg);
-    padding: 0.5rem 1.2rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--text);
-    border: 1px solid var(--border);
-    margin-bottom: 1.2rem;
-    backdrop-filter: blur(2px);
-}
-
-.cozy-badge i {
-    font-size: 1rem;
-}
-
-.welcome-header h1 {
-    font-size: 3.2rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: var(--text);
-    letter-spacing: -0.02em;
-    margin-bottom: 0.75rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.welcome-header h1 i {
-    background: none;
-    color: var(--text);
-    font-size: 2.8rem;
-}
-
-.tagline {
-    font-size: 1.2rem;
-    color: var(--text);
-    max-width: 580px;
-    margin: 0 auto;
-    background: var(--bg);
-    padding: 0.6rem 1.4rem;
-    border-radius: var(--radius-sm);
-    backdrop-filter: blur(4px);
-}
-
-/* cozy card style */
-.card {
-    background: var(--card-bg);
-    backdrop-filter: blur(2px);
-    border-radius: var(--radius);
-    padding: 1.8rem;
-    transition: all 0.25s ease;
-    border: 1px solid var(--border);
-}
-
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 32px -12px rgba(90, 50, 25, 0.12);
-}
-
-/* grid layout */
-.grid-2cols {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.8rem;
-    margin-bottom: 2.5rem;
-}
-
-.detail-list {
-    list-style: none;
-    margin-top: 0.8rem;
-}
-
-.detail-list li {
-    margin-bottom: 0.7rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.detail-list li i {
-    color: var(--text);
-    width: 22px;
-    font-size: 1rem;
-}
-
-.status-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--bg);
-    padding: 0.35rem 1rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--text);
-    margin-top: 1rem;
-    border: 1px solid var(--border);
-}
-
-/* quick actions grid */
-.action-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0 2rem;
-}
-
-.action-item {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    padding: 1.5rem 1rem;
-    text-align: center;
-    transition: all 0.2s;
-    color: var(--text);
-    border: 1px solid var(--border);
-    box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.03);
-}
-
-.action-item:hover { 
-    transform: scale(0.98);
-}
-
-.action-icon {
-    background: var(--bg);
-    width: 64px;
-    height: 64px;
-    border-radius: var(--radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-    font-size: 1.8rem;
-    color: var(--text);
-}
-
-.action-item h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--primary-dark);
-}
-
-.action-item p {
-    font-size: 0.85rem;
-    color: var(--text);
-    margin-bottom: 1.2rem;
-}
-
-.cozy-btn {
-    background: var(--card-bg);
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: var(--radius-sm);
-    font-weight: 600;
-    font-size: 0.85rem;
-    color: var(--text);
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s;
-    text-decoration: none;
-    justify-content: center;
-}
-
-.cozy-btn.outline {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text);
-}
-
-.cozy-btn.outline:hover {
-    background: var(--card-bg);
-    border-color: var(--border);
-    color: var(--text);
-}
-
-.cozy-btn:hover {
-    background: var(--card-bg);
-    transform: translateY(-2px);
-}
-
-/* steps area */
-.steps-wrapper {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    padding: 2rem;
-    margin: 1.5rem 0;
-    border: 1px solid var(--border);
-}
-
-.steps-title {
-    font-size: 1.7rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 1.8rem;
-    color: var(--primary-dark);
-}
-
-.steps-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-}
-
-.step-row {
+/* header with success mark */
+.success-header {
     display: flex;
     align-items: center;
     gap: 1rem;
-    background: var(--bg);
-    padding: 1rem 1.4rem;
-    border-radius: var(--radius-sm);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-    border: 1px solid var(--border);
-    transition: all 0.2s;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
 }
 
-.step-number {
-    background: var(--card-bg);
-    width: 42px;
-    height: 42px;
+.check-icon {
+    background: var(--primary);
+    color: var(--color);
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 30px;
-    font-weight: 800;
+    font-size: 1.8rem;
+    box-shadow: 0 8px 18px -4px rgba(16, 185, 129, 0.35);
+}
+
+.success-header h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color);
+    line-height: 1.2;
+}
+
+.success-header h1 span {
+    font-weight: 400;
+    color: var(--secondary);
+    font-size: 1.1rem;
+    display: block;
+    margin-top: 0.2rem;
+    letter-spacing: 0;
+}
+
+/* main grid: left details, right tutorial */
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* installation details panel */
+.details-panel {
+    border-radius: var(--radius);
+    padding: 1.8rem 1.6rem;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
     font-size: 1.2rem;
-    color: var(--text);
+    font-weight: 600;
+    color: var(--color);
+    margin-bottom: 1.3rem;
+    letter-spacing: -0.01em;
+}
+
+.panel-title i {
+    color: var(--color);
+    font-size: 1.2rem;
+    background: rgba(45, 122, 155, 0.1);
+    padding: 0.4rem;
+    border-radius: 0.7rem;
+    width: 2rem;
+    text-align: center;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.9rem 0;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 500;
+    color: var(--secondary);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-label i {
+    width: 1.1rem;
+    color: var(--secondary);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: var(--color);
+    background: var(--primary);
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    letter-spacing: 0.01em;
+    word-break: break-word;
+    text-align: right;
+    max-width: 60%;
+}
+
+.badge-success {
+    background: #e3f9ef;
+    color: #0b6e4f;
+    padding: 0.25rem 0.9rem;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border: 1px solid #b6e6d3;
+}
+
+/* tutorial panel */
+.tutorial-panel {
+    background: var(--success-bg);
+    border-radius: var(--radius);
+    padding: 1.8rem 1.6rem;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.tutorial-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 0.8rem;
+}
+
+.step-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.step-num {
+    background: #1e3b5c;
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    box-shadow: 0 4px 8px -2px rgba(0, 30, 50, 0.2);
 }
 
 .step-content {
     flex: 1;
 }
 
-.step-content h4 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
 .step-content p {
-    font-size: 0.9rem;
-    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #1f3a4e;
+    font-weight: 500;
 }
 
 .step-content code {
-    background: var(--card-bg);
-    padding: 0.2rem 0.6rem;
-    border-radius: 24px;
+    background: #e5edf4;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.6rem;
     font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 0.8rem;
-    color: var(--text);
+    font-size: 0.85rem;
+    color: #0b2b42;
+    font-weight: 600;
+    border: 1px solid #cedce7;
+    margin: 0 0.1rem;
 }
 
-.footer-cozy {
-    margin-top: 2rem;
-    text-align: center;
-    font-size: 0.85rem;
-    color: var(--text);
-    border-top: 1px solid var(--border);
-    padding-top: 2rem;
+.step-content .small-hint {
+    font-size: 0.8rem;
+    color: #5f7d96;
+    margin-top: 0.2rem;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.step-content .small-hint i {
+    font-size: 0.65rem;
+    color: #5f7d96;
+}
+
+/* next steps section */
+.next-steps {
+    margin-top: 1.8rem;
+    background: linear-gradient(105deg, #eef7fb 0%, #e4f0f7 100%);
+    border-radius: var(--radius);
+    padding: 1.6rem 1.9rem;
+    border: 1px solid #cfe1ed;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
 }
 
-.footer-links a {
-    color: var(--text);
+.next-steps-left {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+}
+
+.next-steps-left i {
+    font-size: 1.8rem;
+    color: #1f5e7a;
+    background: #ffffffc0;
+    padding: 0.5rem;
+    border-radius: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.next-steps-text h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0d2b3f;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.2rem;
+}
+
+.next-steps-text p {
+    font-size: 0.9rem;
+    color: #3b5f7a;
+    font-weight: 400;
+}
+
+.next-buttons {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: default;
+    transition: all 0.15s;
+    background: white;
+    color: #1e3b5c;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
     text-decoration: none;
-    margin: 0 0.7rem;
-    transition: color 0.2s;
 }
 
-.footer-links a:hover {
-    color: var(--text);
-    text-decoration: underline;
+.btn-primary {
+    background: #1e3b5c;
+    color: white;
+    box-shadow: 0 8px 18px -6px rgba(20, 60, 90, 0.3);
 }
 
-@keyframes fadeSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(18px);
+.btn i {
+    font-size: 0.9rem;
+}
+
+.btn-primary i {
+    color: #b3d9f0;
+}
+
+/* small footnote / meta */
+.footer-meta {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #7f99b0;
+    border-top: 1px solid #deecf3;
+    padding-top: 1.2rem;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.footer-meta i {
+    margin-right: 0.3rem;
+}
+
+/* responsive */
+@media (max-width: 760px) {
+    .success-card {
+    padding: 1.8rem;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+    .grid-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    }
+
+    .success-header h1 {
+    font-size: 1.6rem;
+    }
+
+    .next-steps {
+    flex-direction: column;
+    align-items: flex-start;
+    }
+
+    .next-buttons {
+    width: 100%;
+    }
+
+    .btn {
+    flex: 1;
+    justify-content: center;
+    }
+
+    .detail-value {
+    max-width: 55%;
     }
 }
 
-@media (max-width: 680px) {
-    body { padding: 1.2rem; }
-    .welcome-header h1 { font-size: 2.2rem; }
-    .tagline { font-size: 1rem; }
-    .step-row { flex-direction: column; align-items: flex-start; }
-    .footer-cozy { flex-direction: column; text-align: center; }
+@media (max-width: 480px) {
+    .success-card {
+    padding: 1.3rem;
+    border-radius: 2rem;
+    }
+
+    .check-icon {
+    width: 2.8rem;
+    height: 2.8rem;
+    font-size: 1.5rem;
+    }
+
+    .success-header h1 {
+    font-size: 1.4rem;
+    }
+
+    .details-panel,
+    .tutorial-panel {
+    padding: 1.4rem;
+    }
+
+    .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    }
+
+    .detail-value {
+    max-width: 100%;
+    text-align: left;
+    width: auto;
+    background: #eef4f9;
+    }
+
+    .next-steps {
+    padding: 1.3rem;
+    }
+
+    .next-buttons {
+    flex-direction: column;
+    }
 }
 CSS;
+    }
+
+    private static function layout(): string
+    {
+        return <<<'HTML'
+<?php use Mlangeni\Machinjiri\Core\Views\View; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Machinjiri - Your Cozy Dev Space</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {{ style('css/main.css') }}
+</head>
+<body>
+    @yield('content')
+</body>
+</html>
+HTML;
     }
 }
