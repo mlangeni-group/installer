@@ -532,6 +532,7 @@ ENV;
         $write($this->getCoreConfigDir() . '/ldap.php', ConfigFiles::ldapConfigurationTemplate());
         $write($this->getCoreConfigDir() . '/redis.php', ConfigFiles::redisConfigurationTemplate());
         $write($this->getCoreConfigDir() . '/sms.php', ConfigFiles::smsConfigurationTemplate());
+        $write($this->getCoreConfigDir() . '/encryption.php', ConfigFiles::encryptionCfgTemplate());
         
         /* Database Files */
         $write($this->projectDir . '/database/cache-prefetch-db.php', Database::dbCachePrefetchTemplate());

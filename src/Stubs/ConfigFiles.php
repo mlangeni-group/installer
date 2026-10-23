@@ -4,6 +4,71 @@ namespace Machinjiri\Installer\Stubs;
 
 class ConfigFiles {
 
+    public static function encryptionCfgTemplate() {return <<<'PHP'
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| App's Enncryption Configuration
+|--------------------------------------------------------------------------
+|
+*/
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | Default App Cipher
+    |--------------------------------------------------------------------------
+    |
+    */
+    'default' => env('APP_CIPHER', 'aes-256-gcm'),
+    /*
+    |--------------------------------------------------------------------------
+    | App Encryption key - auto generated in .env
+    |--------------------------------------------------------------------------
+    |
+    */
+    'app_encryption_key' => env('APP_KEY', ''),
+    'encryption_key_previous' => '',
+    /*
+    |--------------------------------------------------------------------------
+    | Enncryption Ciphers (accepts aes-256-cbc, aes-256-gcm)
+    |--------------------------------------------------------------------------
+    |
+    */
+    'ciphers' => [
+        'aes-256-cbc' => [
+            'cipher'   => 'aes-256-cbc',
+            'secret'   => 'encryption-key',
+            'iv_size'  => 16,
+            'tag_size' => 16,
+            'aead'     => false,
+        ],
+        'aes-256-gcm' => [
+            'cipher'   => 'aes-256-gcm',
+            'secret'   => 'encryption-key',
+            'iv_size'  => 12,
+            'tag_size' => 16,
+            'aead'     => true,
+        ],
+    ],
+    /*
+    |--------------------------------------------------------------------------
+    | JSON Web Tokens Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+    'jwt' => [
+        'jwt_cipher' => env('JWT_CIPHER', 'aes-256-gcm'),
+        'jwt_secret' => env('JWT_SECRET', 'some-super-secret'),
+        'jwt_algo' => env('JWT_ALGO', 'HS256'),
+        'jwt_expiration' => env('JWT_EXPIRATION', 3600),
+        'jwt_issuer' => env('JWT_ISSUER', 'machinjiri'),
+        'jwt_audience' => env('JWT_AUDIENCE', 'machinjiri_api'),
+    ]
+];
+PHP;
+    }
+
     public static function smsConfigurationTemplate() {return <<<'PHP'
 <?php
 
