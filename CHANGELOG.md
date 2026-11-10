@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.4.7 - 2026-11-10
+
+### Added
+
+- Redesigned the default starter kit welcome page as a responsive project dashboard with installation details and quick-start guidance.
+- Added accessible light/dark theme switching that follows the operating-system preference by default and remembers the user's selection.
+- Added Shields.io project, installer version, runtime, extensions, and license badges to the README.
+- Expanded beginner and professional documentation, including setup examples, CLI reference, debugging guidance, and cross-platform `command not found` troubleshooting.
+
+### Improved
+
+- Escape generated project name, framework version, and installation date before including them in the welcome page.
+- Updated the default starter kit styles for small screens, reduced-motion preferences, and consistent light/dark color palettes.
+
+### Requirements
+
+- PHP CLI 8.4 or newer
+- Composer 2.x
+- Required PHP extensions: json, mbstring, zip, openssl, pdo, tokenizer, and ctype
+
 ## 1.3.7 - 2026-08-09
 
 ### Highlights

@@ -1,305 +1,281 @@
 # Machinjiri Installer
 
-A Composer plugin and CLI installer for scaffolding new Machinjiri PHP applications quickly and consistently.
+[![Machinjiri](https://img.shields.io/badge/Machinjiri-PHP%20Framework-6958d6?style=for-the-badge)](https://github.com/mlangeni-group/machinjiri)
+[![Installer version](https://img.shields.io/badge/Installer-1.4.7-5543c3?logo=packagist&logoColor=white)](https://github.com/mlangeni-group/installer/releases)
+[![PHP requirement](https://img.shields.io/badge/PHP-%E2%89%A5%208.4-777bb4?logo=php&logoColor=white)](https://www.php.net/)
+[![Composer requirement](https://img.shields.io/badge/Composer-2.x-885630?logo=composer&logoColor=white)](https://getcomposer.org/)
+[![Required extensions](https://img.shields.io/badge/PHP%20extensions-json%20%7C%20mbstring%20%7C%20zip-3572A5)](#requirements)
+[![License](https://img.shields.io/badge/License-MIT-2f9e74.svg)](./LICENSE)
 
-## What’s new
+The Machinjiri Installer creates a ready-to-develop [Machinjiri](https://github.com/mlangeni-group/machinjiri) PHP application. Use the guided prompts if you are new to the framework, or pass options to make project setup repeatable.
 
-The installer has been expanded into a more robust project bootstrap workflow for Machinjiri applications. Recent improvements include:
+## Choose your setup
 
-- interactive project creation with guided prompts
-- strict environment validation for PHP, Composer, required extensions, disk space, and writable directories
-- safe install flows with `--dry-run`, `--force`, and `--keep-on-error`
-- starter kit selection (`default` and `blog`)
-- database template selection (`sqlite` and `mysql`)
-- project version selection via `--m-version` and current Machinjiri compatibility checks
-- optional Git initialization and initial commit support
-- automatic `.env` generation with restricted permissions
-- installation logging via `.installation.log` and a final summary/next-steps output
-- compatibility with Composer plugin execution through the `machinjiri create` / `machinjiri new` commands
+- **New to Machinjiri?** Follow [Quick start](#quick-start) and answer the prompts.
+- **Prefer the terminal?** Use [non-interactive setup](#non-interactive-setup).
+- **Automating or maintaining projects?** See [Command reference](#command-reference), [Debugging](#debugging-an-installation), and [Troubleshooting](#troubleshooting).
 
 ## Requirements
 
-Before running the installer, make sure your environment meets these requirements:
+The installer checks these requirements before creating a project:
 
-- PHP 8.4 or newer
-- Composer 2.x
-- Required PHP extensions: `json`, `mbstring`, `openssl`, `zip`, `pdo`, `tokenizer`, and `ctype`
+| Requirement | Version / extensions |
+| --- | --- |
+| PHP CLI | 8.4 or newer |
+| Composer | 2.x, available as `composer` in your `PATH` |
+| PHP extensions | `json`, `mbstring`, `zip`, `openssl`, `pdo`, `tokenizer`, `ctype` |
 
-The current installer release targets Machinjiri framework versions in the `2.2.x` line and is prepared for the latest 8.4-compatible setup.
+Check your environment:
 
-## Installation
+```bash
+php --version
+composer --version
+php -m
+```
 
-### Global installation (recommended)
+The PHP CLI is the PHP executable used by your terminal. It can be different from the PHP version used by your web server.
+
+## Install the installer
+
+### Recommended: install globally
+
+This makes the `machinjiri` command available from any directory (once Composer's global binary directory is on your `PATH`):
 
 ```bash
 composer global require machinjiri/installer
 ```
 
-### As a project dependency
+If Composer asks whether to allow the Machinjiri Installer plugin, confirm to let Composer install and run it.
+
+### Install in an existing Composer project
+
+From the root of a Composer project:
 
 ```bash
 composer require --dev machinjiri/installer
 ```
 
+Run the local executable from that project directory:
+
+```bash
+vendor/bin/machinjiri create my-app
+```
+
 ## Quick start
 
-Create a new project interactively:
+With the global installation, start the guided setup:
 
 ```bash
 machinjiri create
 ```
 
-Create a project directly from the command line:
+Follow the prompts to choose a project name, Machinjiri version, database, development dependencies, and starter kit. The installer uses the current directory as the parent of the new project.
+
+Or provide a project directory name:
 
 ```bash
 machinjiri create my-app
 ```
 
-You can also use the alias:
+When installation completes, enter the project directory and follow the quick-start instructions printed by the installer:
 
 ```bash
-machinjiri new my-app
+cd my-app
 ```
 
-## Command options
+Review the generated `.env` file and update settings such as database credentials before deploying the application.
 
-The `create` command supports the following options:
+## Non-interactive setup
+
+For CI, scripts, or repeatable local setup, use `--no-interaction` and pass any settings you want to override:
 
 ```bash
-machinjiri create [name] [options]
+machinjiri create my-app \
+  --no-interaction \
+  --database=sqlite \
+  --starter=default \
+  --description="My Machinjiri application" \
+  --company="Example team"
 ```
 
-Options:
-
-- `-f, --force` — overwrite an existing directory if it already exists
-- `--m-version=VERSION` — install a specific Machinjiri framework version
-- `--dev` — include development dependencies
-- `--no-dev` — skip development dependencies
-- `--no-scripts` — skip Composer scripts during install
-- `--dry-run` — preview the installation without creating files
-- `-n, --no-interaction` — skip prompts and use defaults
-- `--git` — initialize a Git repository and make the initial commit
-- `--starter=NAME` — choose a starter kit (`default` or `blog`)
-- `--prefer-cache` — prefer Composer cache when available
-- `--database=sqlite|mysql` — choose the database configuration template
-- `--description=TEXT` — set the project description
-- `--company=NAME` — set the company or organization name
-- `--keep-on-error` — preserve a partially created project if installation fails
-- `-v, --verbose` — show more detailed output
-
-## Common examples
-
-### 1. Interactive setup
-
-```bash
-machinjiri create
-```
-
-### 2. Install a specific Machinjiri framework version
-
-```bash
-machinjiri create my-app --m-version='^2.2.8'
-```
-
-### 3. Non-interactive install with SQLite
-
-```bash
-machinjiri create my-app --no-interaction --database=sqlite --starter=default
-```
-
-### 4. Create a blog starter app
-
-```bash
-machinjiri create my-blog --starter=blog --database=mysql
-```
-
-### 5. Preview installation without creating files
-
-```bash
-machinjiri create my-app --dry-run --verbose
-```
-
-### 6. Overwrite an existing directory
-
-```bash
-machinjiri create my-app --force
-```
-
-### 7. Keep partial files if setup fails
-
-```bash
-machinjiri create my-app --keep-on-error
-```
-
-## What the installer creates
-
-A typical project scaffold includes:
-
-```text
-your-project/
-├── app/
-│   ├── Controllers/
-│   ├── Jobs/
-│   ├── Middleware/
-│   ├── Models/
-│   ├── Webhooks/
-│   ├── Tasks/
-│   └── Providers/
-├── bootstrap/
-│   └── app.php
-├── config/
-│   ├── core/
-│   │   ├── app.php
-│   │   ├── auth.php
-│   │   └── routing.php
-│   └── services/ 
-│       └── providers.php
-├── database/
-│   ├── factories/
-│   ├── migrations/
-│   ├── seeders/
-│   └── cache-prefetch-db.php
-├── public/
-│   ├── src/
-│   │   ├── css/
-│   │   └── js/
-│   └── index.php
-├── resources/
-│   └── views/
-├── routes/
-├── storage/
-├── tests/
-├── artisan
-├── composer.json
-├── .env
-└── phpunit.xml
-```
-
-The installer also generates starter-specific files based on the selected kit and writes the base configuration needed to start developing immediately.
+Without additional options, non-interactive mode uses the defaults: project name `machinjiri-app`, SQLite, development dependencies enabled, and the `default` starter kit.
 
 ## Starter kits
 
-The installer currently supports:
+| Kit | Description |
+| --- | --- |
+| `default` | Welcome page, routes, controller, and responsive light/dark interface |
+| `blog` | Blog-oriented starter page and assets |
+| `minimal` | Project structure without a full starter interface |
 
-- `default` — a general-purpose starter scaffold
-- `blog` — a blog-oriented starter scaffold
-
-Example:
+Choose a kit interactively, or pass it as an option:
 
 ```bash
 machinjiri create my-blog --starter=blog
 ```
 
-## Post-install notes
+## Command reference
 
-After a successful install:
+```text
+machinjiri create [options] [name]
+machinjiri new [options] [name]
+```
 
-- review the generated `.env` file and adjust any environment values
-- inspect `.installation.log` if you need to debug a failed or unusual install
-- start developing from the generated app skeleton
+`new` is an alias for `create`. Use `machinjiri create --help` to see the options supported by your installed version.
+
+| Option | Description |
+| --- | --- |
+| `-f`, `--force` | Continue if the destination directory already exists. |
+| `--m-version=VERSION` | Select the Machinjiri framework version or constraint to install. |
+| `--dev` | Install development dependencies (the interactive default). |
+| `--no-dev` | Skip development dependencies. |
+| `--no-scripts` | Skip Composer scripts during dependency installation. |
+| `--dry-run` | Preview the installation without creating project files. |
+| `-n`, `--no-interaction` | Do not ask questions; use defaults for unspecified settings. |
+| `--git` | Initialize Git and create an initial commit. |
+| `--starter=NAME` | Select `default`, `blog`, or `minimal`. |
+| `--prefer-cache` | Prefer Composer's cache when installing dependencies. |
+| `--database=NAME` | Select `sqlite` or `mysql`. |
+| `--description=TEXT` | Set the project description. |
+| `--company=NAME` | Set the company or organization name. |
+| `--keep-on-error` | Keep a partially created directory if installation fails. |
+| `-v`, `-vv`, `-vvv` / `--verbose` | Show more installation details; `-vvv` includes the stack trace on failure. |
+
+### Examples
+
+Preview an installation before creating files:
+
+```bash
+machinjiri create my-app --dry-run --verbose
+```
+
+Choose a framework version and MySQL:
+
+```bash
+machinjiri create my-app --m-version='^2.3.1' --database=mysql
+```
+
+Create a blog project and initialize Git:
+
+```bash
+machinjiri create my-blog --starter=blog --git
+```
+
+## What gets created
+
+The installer generates an application scaffold with common directories for controllers, routes, views, configuration, database files, public assets, and tests. The selected starter kit adds its own views, routes, and assets. The exact files can vary by installer and framework version.
+
+## Debugging an installation
+
+If the installer exits with an error:
+
+1. Re-run the command with verbose output:
+
+   ```bash
+   machinjiri create my-app --verbose
+   ```
+
+   For a full stack trace, use:
+
+   ```bash
+   machinjiri create my-app -vvv
+   ```
+
+2. Read the error message and verify the requirements above. You can check the terminal PHP executable and its extensions with:
+
+   ```bash
+   which php
+   php --version
+   php -m
+   which composer
+   composer --version
+   ```
+
+   On Windows PowerShell, use `Get-Command php` and `Get-Command composer` instead of `which`.
+
+3. If dependency installation fails, run `composer diagnose` and check your network connection and Composer configuration.
+4. If the installer reports that the destination already exists, choose another project name or use `--force` only if you intend to use that directory.
+5. If you need to inspect a failed installation, re-run with `--keep-on-error` and review the generated files. By default, the installer removes a partially created project after a failure.
 
 ## Troubleshooting
 
-### Command not found 
+### `machinjiri: command not found` (or “not recognized” on Windows)
 
-Make sure Composer is installed and available in your `PATH`.
+This usually means the installer is not installed globally, or Composer's global executable directory is missing from your shell's `PATH`.
 
-1. Locate Your Composer Binary Directory
-```bash
-ls ~/.config/composer/vendor/bin
-# OR
-ls ~/.composer/vendor/bin
-```
-
-2. Update Your Shell Profile
-
-If your path was .config/composer:bash
+**1. Confirm Composer and the global package are installed:**
 
 ```bash
-export PATH="$HOME/.config/composer/vendor/bin:$PATH"
-```
-Use code with caution.
-If your path was .composer:bash
-```bash
-export PATH="$HOME/.composer/vendor/bin:$PATH"
+composer --version
+composer global show machinjiri/installer
 ```
 
+If Composer is missing, install it from [getcomposer.org](https://getcomposer.org/). If the package is not listed, install it:
+
+```bash
+composer global require machinjiri/installer
+```
+
+**2. Ask Composer where its global executables are installed:**
+
+```bash
+composer config --global --absolute bin-dir
+```
+
+Check that this directory contains `machinjiri` (or `machinjiri.bat` on Windows):
+
+```bash
+ls -la "$(composer config --global --absolute bin-dir)"
+```
+
+**3. Add that directory to your `PATH`:**
+
+On macOS or Linux, add the following to your shell startup file (`~/.zshrc` for zsh or `~/.bashrc` for bash), then open a new terminal:
+
+```bash
+export PATH="$(composer config --global --absolute bin-dir):$PATH"
+```
+
+You can apply the change to the current terminal without reopening it by running the same command directly in that terminal.
+
+On Windows, copy the path printed by `composer config --global --absolute bin-dir` and add it to your user `Path` in **Environment Variables**. Open a new PowerShell or Command Prompt afterward.
+
+**4. Check whether the command is now discoverable:**
+
+```bash
+command -v machinjiri
+machinjiri --version
+```
+
+In PowerShell, run `Get-Command machinjiri`.
+
+If you need to run it before changing `PATH`, call the executable directly:
+
+```bash
+php "$(composer config --global --absolute bin-dir)/machinjiri" create my-app
+```
+
+If you installed the package locally instead of globally, run `vendor/bin/machinjiri create my-app` from the directory containing that project's `vendor` folder.
+
+### `php` or `composer` is not found
+
+Install PHP CLI or Composer, then make sure its executable is on your `PATH`. Open a new terminal after changing environment variables. Verify with:
+
+```bash
+php --version
+composer --version
+```
+
+If multiple PHP installations are present, check `which php` (macOS/Linux) or `Get-Command php` (PowerShell) and ensure the selected CLI version is PHP 8.4 or newer.
 
 ### Missing PHP extensions
 
-Install the required extensions before retrying:
-
-```bash
-# Ubuntu / Debian
-sudo apt-get install php8.3-json php8.3-mbstring php8.3-openssl php8.3-zip
-
-# CentOS / RHEL
-sudo yum install php-json php-mbstring php-openssl
-
-# macOS (Homebrew)
-brew install php
-```
-
-### Existing directory error
-
-If the target folder already exists, use `--force` to overwrite it:
-
-```bash
-machinjiri create my-app --force
-```
-
-### Permission denied
-
-```bash
-# Check directory permissions
-ls -la /path/to/project
-
-# Fix permissions (Linux/macOS)
-sudo chown -R $USER:$USER /path/to/project
-sudo chmod -R 755 /path/to/project/storage
-```
-
-### Composer install failed
-
-```bash
-# Check Composer version
-composer --version
-
-# Clear Composer cache
-composer clear-cache
-
-# Try with verbose output
-machinjiri create my-app -vvv
-```
-
-## CI/CD usage
-
-The installer supports non-interactive mode for automation:
-
-```bash
-# GitLab CI example
-before_script:
-  - composer global require machinjiri/installer
-  - export PATH="$PATH:$HOME/.config/composer/vendor/bin:$PATH"
-  - machinjiri create ${CI_PROJECT_NAME} --no-interaction --force --no-dev
-  - cd ${CI_PROJECT_NAME}
-  - composer install --no-dev --no-interaction
-```
+The installer prints the names of any missing extensions. Enable or install those extensions for the **CLI PHP** shown by `php --version`, then confirm they appear in `php -m`.
 
 ## Contributing
 
-```bash
-# Clone the repository
-git clone https://github.com/mlangeni-group/installer.git
-cd installer
-
-# Install dependencies
-composer install
-
-# Smoke-test the installer locally
-php bin/machinjiri create test-app --no-interaction --database=sqlite --starter=default
-```
+Issues and pull requests are welcome: [github.com/mlangeni-group/installer](https://github.com/mlangeni-group/installer). Please include the command you ran, your PHP and Composer versions, and the complete error output when reporting an installation problem.
 
 ## License
 
-This package is distributed under the MIT License.
+This project is released under the [MIT License](./LICENSE).
