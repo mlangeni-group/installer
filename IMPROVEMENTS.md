@@ -1,186 +1,95 @@
-# Machinjiri Installer Improvements
+# Machinjiri Installer: Improvements and Features
 
-## Overview
-The installer has been significantly enhanced with improved error handling, validation, security, and user experience features.
+This document summarizes the installer capabilities and the improvements in version 1.4.7. For installation instructions and the complete CLI option list, see the [README](./README.md).
 
-## New Features
+## Recent improvements
 
-### 1. **ProjectValidator Class** (`ProjectValidator.php`)
-Comprehensive validation system for project setup:
-- **Project name validation**: Ensures valid naming conventions
-- **Disk space checking**: Verifies sufficient space before installation
-- **Permission validation**: Checks write permissions in target directory
-- **PHP version validation**: Ensures minimum PHP 8.0
-- **Extension validation**: Verifies required PHP extensions
+### Default starter kit
 
-### 2. **InstallationManager Class** (`InstallationManager.php`)
-Manages installation steps with rollback capability:
-- Register installation steps with execute and rollback callbacks
-- Execute steps sequentially or individually
-- Automatic rollback on failure
-- Step tracking for recovery
+- Replaced the basic installation notice with a responsive welcome dashboard showing project details, readiness status, and first steps.
+- Added light and dark themes. The page follows the operating-system preference unless the user chooses a theme, and saves that choice for later visits.
+- Improved small-screen layouts, keyboard focus visibility, semantic page structure, and reduced-motion behavior.
+- Escaped project-provided name, version, and date values before rendering them in the welcome view.
 
-### 3. **InstallerLogger Class** (`InstallerLogger.php`)
-Comprehensive logging system:
-- Multiple log levels: INFO, SUCCESS, WARNING, ERROR
-- Timestamped log entries
-- Optional verbose output
-- Log file generation (`.installation.log`)
-- Exception tracking with stack traces
+### Documentation
 
-### 4. **InstallationSummary Class** (`InstallationSummary.php`)
-Post-installation reporting:
-- Installation summary with details
-- Quick start guide
-- Important security notes
-- Recommended next steps
-- Helpful resources and documentation links
+- Reorganized the README for both first-time users and developers who prefer scripted or non-interactive setup.
+- Added Shields.io badges for Machinjiri, installer version, PHP and Composer requirements, extensions, and license.
+- Added command examples, a CLI option reference, verbose debugging advice, and macOS/Linux/Windows instructions for resolving `machinjiri: command not found`.
 
-## Enhanced Features
+## Installer capabilities
 
-### Security Improvements
-- **.env file permissions**: Now set to `0600` (readable by owner only)
-- **Validation checks**: Early detection of configuration issues
-- **Error logging**: Sensitive operations are logged for debugging
+### Guided and scripted project creation
 
-### Error Handling
-- **Enhanced error messages**: More descriptive and actionable error text
-- **Logging on failure**: All failures are logged with full context
-- **Stack traces**: Available in verbose mode for troubleshooting
-- **Rollback capability**: Automatic cleanup if installation fails
+The `create` command prompts for project details and setup choices. The `new` command is an alias. For automation, pass a project name and `--no-interaction`, then provide any non-default values as options.
 
-### User Experience
-- **Dry-run mode**: Preview what will be installed without creating files
-- **Verbose mode**: Detailed output for debugging
-- **Progress tracking**: Clear progress indication with step descriptions
-- **Installation summary**: Comprehensive post-installation report
-- **Quick start guide**: Immediate next steps after installation
+The installer supports:
 
-## New Command Options
+- Machinjiri version selection with `--m-version`
+- Development dependency selection with `--dev` or `--no-dev`
+- `default`, `blog`, and `minimal` starter kits
+- SQLite and MySQL database templates
+- Optional Git initialization with `--git`
+- Dry runs with `--dry-run`
+- Composer cache preference with `--prefer-cache`
+- Safe handling options for existing directories and failures: `--force` and `--keep-on-error`
+
+Run `machinjiri create --help` for the installed command's complete option list.
+
+### Validation and installation
+
+Before creating an application, the command checks the PHP CLI version, required extensions, and Composer availability. The installer also validates project names, available disk space, and write permissions.
+
+The scaffold process creates project directories and files, writes Composer and environment configuration, installs dependencies, generates an application key and database configuration, and checks that required project files were created.
+
+### Logging and recovery
+
+- `InstallationManager` runs registered installation steps and provides rollback callbacks.
+- `InstallerLogger` records timestamped events in `.installation.log` in the target project directory. Verbose mode provides additional terminal output.
+- Failed installations are cleaned up by default. Use `--keep-on-error` to retain the partially created project for investigation.
+- Use `--verbose` or `-vvv` for more diagnostic output; the latter includes the exception stack trace.
+
+### Post-install guidance
+
+After a successful installation, the CLI reports the new project location and provides quick-start instructions. Review the generated `.env` file and configure the database and other environment-specific values before using the application.
+
+## Requirements
+
+The CLI currently checks for:
+
+- PHP CLI 8.4 or newer
+- Composer 2.x
+- PHP extensions: `json`, `mbstring`, `zip`, `openssl`, `pdo`, `tokenizer`, and `ctype`
+
+Use `php --version`, `php -m`, and `composer --version` to inspect the tools and extensions available to the terminal. The PHP CLI configuration may differ from the PHP installation used by a web server.
+
+## Common diagnostic commands
+
+Preview a setup without creating project files:
 
 ```bash
-# Dry-run without creating files
-machinjiri new my-app --dry-run
-
-# Verbose output for debugging
-machinjiri new my-app --verbose
-
-# Both options together
-machinjiri new my-app --dry-run --verbose
-
-# Force overwrite existing directory
-machinjiri new my-app --force
-
-# Skip development dependencies
-machinjiri new my-app --no-dev
-
-# Specify Machinjiri version
-machinjiri new my-app --m-version=2.0
+machinjiri create my-app --dry-run --verbose
 ```
 
-## Installation Steps
+Show the full stack trace for an installation failure:
 
-The installer now performs these steps in order:
-
-1. **Validate system requirements** - PHP version, extensions, Composer
-2. **Validate project configuration** - Project name, disk space, permissions
-3. **Prepare project directory** - Create or validate directory
-4. **Create project structure** - Set up directories
-5. **Create project files** - Bootstrap, routes, controllers, views
-6. **Copy migrations** - Database migration files
-7. **Write composer.json** - Project dependencies configuration
-8. **Write environment configuration** - .env file with secure permissions
-9. **Install dependencies** - Composer install
-10. **Generate application key** - Secure app key
-11. **Validate installation** - Verify all required files exist
-
-## Usage Examples
-
-### Basic Installation
 ```bash
-machinjiri create my-awesome-app
+machinjiri create my-app -vvv
 ```
 
-### With Verbose Output
+Inspect the environment:
+
 ```bash
-machinjiri create my-awesome-app -v
+php --version
+php -m
+composer --version
+composer diagnose
 ```
 
-### Dry-Run to Preview
+If `machinjiri` is not recognized by the shell, install the package globally and add Composer's global binary directory to `PATH`. Find that directory with:
+
 ```bash
-machinjiri create my-awesome-app --dry-run
+composer config --global --absolute bin-dir
 ```
 
-### Force Overwrite
-```bash
-machinjiri create my-awesome-app --force
-```
-
-### With Specific Version
-```bash
-machinjiri create my-awesome-app --m-version=2.0
-```
-
-## Installation Log
-
-After installation, a log file is created at `.installation.log` within the project directory containing:
-- Timestamp for each operation
-- Operation type (INFO, SUCCESS, WARNING, ERROR)
-- Detailed messages
-- Exception stack traces (if errors occurred)
-
-## Configuration
-
-The installer respects the following environment variables and options:
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `--force` | false | Overwrite existing directory |
-| `--m-version` | * | Specific Machinjiri version |
-| `--dev` | false | Include dev dependencies |
-| `--no-dev` | false | Skip dev dependencies |
-| `--no-scripts` | false | Skip Composer scripts |
-| `--dry-run` | false | Preview without creating files |
-| `--verbose` | false | Detailed output |
-| `--no-interaction` | false | Non-interactive mode |
-
-## Error Handling
-
-The installer now provides:
-- Clear error messages with suggestions
-- Automatic logging of all errors
-- Detailed stack traces in verbose mode
-- Project validation before installation begins
-- Graceful failure with cleanup
-
-## Security Notes
-
-1. **Environment File**: The `.env` file is created with `0600` permissions (owner-read/write only)
-2. **Sensitive Data**: Database passwords and API keys should be configured in `.env` after installation
-3. **Git Exclusion**: `.env` files are ignored in `.gitignore`
-4. **Permissions**: Proper directory permissions are set (0755 for directories, 0644 for files)
-
-## Troubleshooting
-
-If installation fails:
-
-1. Check the installation log: `.installation.log`
-2. Run with verbose mode: `machinjiri new app --verbose`
-3. Verify system requirements are met
-4. Check disk space availability
-5. Ensure directory permissions are writable
-
-## Development
-
-To extend the installer:
-
-1. Create custom validation in `ProjectValidator`
-2. Add installation steps using `InstallationManager`
-3. Log important operations using `InstallerLogger`
-4. Display custom summaries with `InstallationSummary`
-5. Refactor namespace
-
----
-
-**Last Updated**: September 5, 2026  
-**Installer Version**: 1.3.7
+See the README's [command-not-found troubleshooting](./README.md#machinjiri-command-not-found-or-not-recognized-on-windows) for operating-system-specific steps.
