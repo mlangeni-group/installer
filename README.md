@@ -1,13 +1,16 @@
 # Machinjiri Installer
 
 [![Machinjiri](https://img.shields.io/badge/Machinjiri-PHP%20Framework-6958d6?style=for-the-badge)](https://github.com/mlangeni-group/machinjiri)
-[![Installer version](https://img.shields.io/badge/Installer-1.4.7-5543c3?logo=packagist&logoColor=white)](https://github.com/mlangeni-group/installer/releases)
+[![Installer version](https://img.shields.io/badge/Installer-1.4.8-5543c3?logo=packagist&logoColor=white)](https://github.com/mlangeni-group/installer/releases)
 [![PHP requirement](https://img.shields.io/badge/PHP-%E2%89%A5%208.4-777bb4?logo=php&logoColor=white)](https://www.php.net/)
 [![Composer requirement](https://img.shields.io/badge/Composer-2.x-885630?logo=composer&logoColor=white)](https://getcomposer.org/)
 [![Required extensions](https://img.shields.io/badge/PHP%20extensions-json%20%7C%20mbstring%20%7C%20zip-3572A5)](#requirements)
 [![License](https://img.shields.io/badge/License-MIT-2f9e74.svg)](./LICENSE)
 
 The Machinjiri Installer creates a ready-to-develop [Machinjiri](https://github.com/mlangeni-group/machinjiri) PHP application. Use the guided prompts if you are new to the framework, or pass options to make project setup repeatable.
+
+# Framework Documentation
+Documentation for Machinjiri Framework can be found at [Machinjiri Documentation](https://github.com/mlangeni-group/machinjiri/wiki)
 
 ## Choose your setup
 

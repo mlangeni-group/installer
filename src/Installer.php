@@ -546,10 +546,6 @@ ENV;
         $write($this->projectDir . '/artisan', Root::artisanTemplate(), 0755);
         @chmod($this->projectDir . '/artisan', 0755);
         
-        /* Resources files */
-        $write($this->projectDir . '/resources/views/errors/404.view.php', Resources::notFoundViewTemplate());
-        $write($this->projectDir . '/resources/views/layouts/error.layout.php', Resources::notFoundLayoutTemplate());
-        
         /* Public Entry Files */
         $write($this->projectDir . '/public/index.php', Publics::publicIndexTemplate(), 0444);
         
