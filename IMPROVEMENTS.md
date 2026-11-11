@@ -1,6 +1,6 @@
 # Machinjiri Installer: Improvements and Features
 
-This document summarizes the installer capabilities and the improvements in version 1.4.7. For installation instructions and the complete CLI option list, see the [README](./README.md).
+This document summarizes the installer capabilities and the improvements in version 1.4.8. For installation instructions and the complete CLI option list, see the [README](./README.md).
 
 ## Recent improvements
 
