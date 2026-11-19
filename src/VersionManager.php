@@ -25,12 +25,13 @@ final class VersionManager
         return [
             'minimum' => '^2.2.6',
             'installable' => [
-                '^2.2.6' => "machinjiri v2.2.6",
-                '^2.2.7' => "machinjiri v2.2.7",
-                '^2.2.8' => "machinjiri v2.2.8",
-                '^2.2.9' => "machinjiri v2.2.9",
-                '^2.3.1' => "machinjiri v2.3.1",
-                '^2.3.2' => "machinjiri v2.3.2",
+                '^2.2.6' => "Machinjiri v2.2.6",
+                '^2.2.7' => "Machinjiri v2.2.7",
+                '^2.2.8' => "Machinjiri v2.2.8",
+                '^2.2.9' => "Machinjiri v2.2.9",
+                '^2.3.1' => "Machinjiri v2.3.1",
+                '^2.3.2' => "Machinjiri v2.3.2",
+                '^2.3.3' => "Machinjiri v2.3.3",
             ]
         ];
     }
