@@ -42,13 +42,11 @@ class InstallationSummary
     public function display(): void
     {
         $this->io->section('Installation Summary');
-
-        // Display details
+        $rows = [];
         foreach ($this->details as $key => $value) {
-            $this->io->writeln("<fg=cyan>{$key}:</> <fg=white>{$value}</>");
+            $rows[] = [$key, $value];
         }
-
-        $this->io->newLine();
+        $this->io->table(['Setting', 'Value'], $rows);
     }
 
     /**
@@ -64,7 +62,7 @@ class InstallationSummary
         $this->io->writeln("   <fg=yellow>cd {$this->projectName}</>");
 
         $this->io->newLine();
-        $this->io->writeln('2. Start the development server (if not already started:');
+        $this->io->writeln('2. Start the development server (if it is not already running):');
         $this->io->writeln('   <fg=yellow>php artisan run:dev</>');
 
         $this->io->newLine();
@@ -122,7 +120,7 @@ class InstallationSummary
         $this->io->section('Helpful Resources');
 
         $resources = [
-            'Documentation' => 'https://github.com/preciouslyson/machinjiri#Introduction',
+            'Documentation' => 'https://github.com/mlangeni-group/machinjiri/wiki',
         ];
 
         foreach ($resources as $name => $url) {

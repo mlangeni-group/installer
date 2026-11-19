@@ -2,6 +2,12 @@
 
 namespace Machinjiri\Installer;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RuntimeException;
+use SplFileInfo;
+use Throwable;
+
 /**
  * Manages installation steps and provides rollback capability
  */
@@ -9,20 +15,13 @@ class InstallationManager
 {
     private array $steps = [];
     private array $executedSteps = [];
-    private string $projectDir;
-
-    public function __construct(string $projectDir)
-    {
-        $this->projectDir = $projectDir;
-    }
+    private array $rollbackErrors = [];
 
     /**
      * Register an installation step
      * 
      * @param string $name
      * @param callable $execute
-     * @param callable|null $rollback
-     * @return $this
      */
     public function registerStep(string $name, callable $execute, ?callable $rollback = null): self
     {
@@ -39,41 +38,44 @@ class InstallationManager
      * Execute a specific step
      * 
      * @param string $name
-     * @return bool
-     * @throws \RuntimeException
      */
     public function executeStep(string $name): bool
     {
         if (!isset($this->steps[$name])) {
-            throw new \RuntimeException("Installation step not found: {$name}");
+            throw new RuntimeException("Installation step not found: {$name}");
         }
 
         $step = $this->steps[$name];
 
-        try {
-            call_user_func($step['execute']);
-            $this->steps[$name]['executed'] = true;
-            $this->executedSteps[] = $name;
-            return true;
-        } catch (\Exception $e) {
-            throw new \RuntimeException("Installation step '{$name}' failed: " . $e->getMessage(), 0, $e);
-        }
+        $this->steps[$name]['executed'] = true;
+        $this->executedSteps[] = $name;
+        call_user_func($step['execute']);
+
+        return true;
     }
 
     /**
      * Execute all registered steps in order
-     * 
-     * @return bool
-     * @throws \RuntimeException
      */
     public function executeAll(): bool
     {
         foreach (array_keys($this->steps) as $stepName) {
             try {
                 $this->executeStep($stepName);
-            } catch (\Exception $e) {
-                $this->rollback();
-                throw $e;
+            } catch (Throwable $exception) {
+                if (!$this->rollback()) {
+                    $rollbackMessages = [];
+                    foreach ($this->rollbackErrors as $step => $error) {
+                        $rollbackMessages[] = "{$step}: {$error->getMessage()}";
+                    }
+                    throw new RuntimeException(
+                        "Installation failed and rollback was incomplete: " . implode('; ', $rollbackMessages),
+                        0,
+                        $exception
+                    );
+                }
+
+                throw $exception;
             }
         }
 
@@ -83,10 +85,10 @@ class InstallationManager
     /**
      * Rollback all executed steps in reverse order
      * 
-     * @return bool
      */
     public function rollback(): bool
     {
+        $this->rollbackErrors = [];
         $stepsToRollback = array_reverse($this->executedSteps);
 
         foreach ($stepsToRollback as $stepName) {
@@ -95,20 +97,19 @@ class InstallationManager
             if ($step['rollback']) {
                 try {
                     call_user_func($step['rollback']);
-                } catch (\Exception $e) {
-                    // Log rollback errors but don't stop the process
-                    error_log("Rollback error for step '{$stepName}': " . $e->getMessage());
+                } catch (Throwable $exception) {
+                    $this->rollbackErrors[$stepName] = $exception;
                 }
             }
         }
 
-        return true;
+        $this->executedSteps = [];
+
+        return $this->rollbackErrors === [];
     }
 
     /**
-     * Get list of executed steps
-     * 
-     * @return array
+     * @return list<string>
      */
     public function getExecutedSteps(): array
     {
@@ -116,9 +117,6 @@ class InstallationManager
     }
 
     /**
-     * Get total number of steps
-     * 
-     * @return int
      */
     public function getTotalSteps(): int
     {
@@ -126,50 +124,76 @@ class InstallationManager
     }
 
     /**
-     * Remove a directory recursively
-     * 
-     * @param string $dir
-     * @return bool
      */
     public static function removeDirectory(string $dir): bool
     {
+        if (is_link($dir)) {
+            if (!unlink($dir)) {
+                throw new RuntimeException("Failed to remove installation link: {$dir}");
+            }
+
+            return true;
+        }
+
         if (!is_dir($dir)) {
             return false;
         }
 
-        $files = array_diff(scandir($dir), ['.', '..']);
-        foreach ($files as $file) {
-            $path = $dir . DIRECTORY_SEPARATOR . $file;
-            is_dir($path) ? self::removeDirectory($path) : @unlink($path);
+        $realDirectory = realpath($dir);
+        $workingDirectory = getcwd();
+        if (
+            $realDirectory === false
+            || dirname($realDirectory) === $realDirectory
+            || $realDirectory === $workingDirectory
+        ) {
+            throw new RuntimeException("Refusing to remove a protected directory: {$dir}");
         }
 
-        return @rmdir($dir);
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        foreach ($files as $file) {
+            if (!$file instanceof SplFileInfo) {
+                continue;
+            }
+
+            $path = $file->getPathname();
+            $removed = $file->isLink() || !$file->isDir()
+                ? unlink($path)
+                : rmdir($path);
+
+            if (!$removed) {
+                throw new RuntimeException("Failed to remove installation path: {$path}");
+            }
+        }
+
+        if (!rmdir($dir)) {
+            throw new RuntimeException("Failed to remove installation directory: {$dir}");
+        }
+
+        return true;
     }
 
     /**
-     * Create a rollback handler for directory creation
-     * 
-     * @param string $dir
-     * @return callable
      */
     public static function createDirectoryRollback(string $dir): callable
     {
-        return function () use ($dir) {
+        return static function () use ($dir): void {
             self::removeDirectory($dir);
         };
     }
 
     /**
-     * Create a rollback handler for file creation
-     * 
-     * @param string $file
-     * @return callable
      */
     public static function createFileRollback(string $file): callable
     {
-        return function () use ($file) {
+        return static function () use ($file): void {
             if (file_exists($file)) {
-                @unlink($file);
+                if (!unlink($file)) {
+                    throw new RuntimeException("Failed to remove installation file: {$file}");
+                }
             }
         };
     }

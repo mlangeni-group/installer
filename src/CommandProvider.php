@@ -3,14 +3,14 @@
 namespace Machinjiri\Installer;
 
 use Composer\Plugin\Capability\CommandProvider as CommandProviderCapability;
-use Machinjiri\Installer\Commands\InstallCommand;
+use Machinjiri\Installer\Commands\ComposerInstallCommand;
 
 class CommandProvider implements CommandProviderCapability
 {
-    public function getCommands()
+    public function getCommands(): array
     {
         return [
-            new InstallCommand(),
+            new ComposerInstallCommand(),
         ];
     }
 }

@@ -5,43 +5,27 @@ namespace Machinjiri\Installer;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
-use Composer\EventDispatcher\EventSubscriberInterface;
-use Composer\Script\Event;
 use Composer\Plugin\Capable;
+use Composer\Plugin\Capability\CommandProvider as CommandProviderCapability;
 
-class Plugin implements PluginInterface, EventSubscriberInterface, Capable
+final class Plugin implements PluginInterface, Capable
 {
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
-        // Plugin activation
     }
 
-    public function deactivate(Composer $composer, IOInterface $io)
+    public function deactivate(Composer $composer, IOInterface $io): void
     {
-        // Plugin deactivation
     }
 
-    public function uninstall(Composer $composer, IOInterface $io)
+    public function uninstall(Composer $composer, IOInterface $io): void
     {
-        // Plugin uninstallation
     }
 
-    public function getCapabilities()
+    public function getCapabilities(): array
     {
         return [
-            'Composer\Plugin\Capability\CommandProvider' => 'Machinjiri\Installer\CommandProvider',
+            CommandProviderCapability::class => CommandProvider::class,
         ];
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            'post-autoload-dump' => 'onPostAutoloadDump',
-        ];
-    }
-
-    public static function onPostAutoloadDump(Event $event)
-    {
-        // Optional: post-autoload-dump actions
     }
 }
