@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Improved
+
+- Refactored installer lifecycle handling while preserving the existing CLI and Machinjiri project layout.
+- Corrected dry-run, rollback, logging, Composer discovery, generated Composer metadata, and selected PDO-driver validation.
+- Aligned package requirements with the PHP extensions checked by the installer.
+
 ## 1.4.7 - 2026-11-10
 
 ### Added

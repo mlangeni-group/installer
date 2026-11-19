@@ -6,8 +6,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ProjectValidator
 {
+    public const REQUIRED_EXTENSIONS = ['json', 'mbstring', 'zip', 'openssl', 'pdo', 'tokenizer', 'ctype'];
+
     private SymfonyStyle $io;
-    private string $projectPath;
 
     public function __construct(SymfonyStyle $io)
     {
@@ -23,7 +24,7 @@ class ProjectValidator
      */
     public function validateProjectName(string $projectName): bool
     {
-        if (empty($projectName)) {
+        if (trim($projectName) === '') {
             throw new \InvalidArgumentException('Project name cannot be empty');
         }
 
@@ -60,7 +61,6 @@ class ProjectValidator
         while (!is_dir($checkPath) && !is_file($checkPath)) {
             $parent = dirname($checkPath);
             if ($parent === $checkPath) {
-                $checkPath = '/'; // Windows: C:\, Unix: /
                 break;
             }
             $checkPath = $parent;
@@ -136,6 +136,23 @@ class ProjectValidator
         return true;
     }
 
+    public function validateDatabaseDriver(string $database): bool
+    {
+        $extension = match ($database) {
+            'sqlite' => 'pdo_sqlite',
+            'mysql' => 'pdo_mysql',
+            default => throw new \InvalidArgumentException("Unsupported database driver: {$database}"),
+        };
+
+        if (!extension_loaded($extension)) {
+            throw new \RuntimeException(
+                "The selected {$database} database requires the PHP extension: {$extension}"
+            );
+        }
+
+        return true;
+    }
+
     /**
      * Validate PHP version
      * 
@@ -143,7 +160,7 @@ class ProjectValidator
      * @return bool
      * @throws \RuntimeException
      */
-    public function validatePhpVersion(string $minimumVersion = '8.0.0'): bool
+    public function validatePhpVersion(string $minimumVersion = VersionManager::RECOMMENDED_PHP_VERSION): bool
     {
         if (!version_compare(PHP_VERSION, $minimumVersion, '>=')) {
             throw new \RuntimeException(

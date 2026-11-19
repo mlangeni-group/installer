@@ -25,8 +25,10 @@ The installer checks these requirements before creating a project:
 | Requirement | Version / extensions |
 | --- | --- |
 | PHP CLI | 8.4 or newer |
-| Composer | 2.x, available as `composer` in your `PATH` |
-| PHP extensions | `json`, `mbstring`, `zip`, `openssl`, `pdo`, `tokenizer`, `ctype` |
+| Composer | 2.x, available in your `PATH` or as `composer.phar` in the current directory |
+| PHP extensions | `json`, `mbstring`, `zip`, `openssl`, `pdo`, `tokenizer`, `ctype`, and the selected PDO driver |
+
+SQLite projects require `pdo_sqlite`; MySQL projects require `pdo_mysql`.
 
 Check your environment:
 
@@ -128,16 +130,17 @@ machinjiri new [options] [name]
 
 | Option | Description |
 | --- | --- |
-| `-f`, `--force` | Continue if the destination directory already exists. |
-| `--m-version=VERSION` | Select the Machinjiri framework version or constraint to install. |
+| `-f`, `--force` | Replace an existing destination directory. Its contents will be removed. |
+| `--name=NAME` | Set the project directory name instead of using the positional argument. |
+| `--m-version=VERSION`, `--framework-version=VERSION` | Select the Machinjiri framework version or constraint to install. |
 | `--dev` | Install development dependencies (the interactive default). |
 | `--no-dev` | Skip development dependencies. |
 | `--no-scripts` | Skip Composer scripts during dependency installation. |
-| `--dry-run` | Preview the installation without creating project files. |
+| `--dry-run` | Validate and preview the installation without creating files or directories. |
 | `-n`, `--no-interaction` | Do not ask questions; use defaults for unspecified settings. |
 | `--git` | Initialize Git and create an initial commit. |
 | `--starter=NAME` | Select `default`, `blog`, or `minimal`. |
-| `--prefer-cache` | Prefer Composer's cache when installing dependencies. |
+| `--prefer-cache` | Deprecated compatibility option with no effect; Composer manages its cache automatically. |
 | `--database=NAME` | Select `sqlite` or `mysql`. |
 | `--description=TEXT` | Set the project description. |
 | `--company=NAME` | Set the company or organization name. |
@@ -146,7 +149,7 @@ machinjiri new [options] [name]
 
 ### Examples
 
-Preview an installation before creating files:
+Validate and preview an installation without creating files or directories:
 
 ```bash
 machinjiri create my-app --dry-run --verbose
@@ -163,6 +166,17 @@ Create a blog project and initialize Git:
 ```bash
 machinjiri create my-blog --starter=blog --git
 ```
+
+## Development
+
+Install the development dependencies and run the test suite:
+
+```bash
+composer install
+composer test
+```
+
+The GitHub Actions workflow validates Composer metadata and runs the tests on PHP 8.4 and 8.5.
 
 ## What gets created
 

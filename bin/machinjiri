@@ -10,8 +10,9 @@ if (file_exists(__DIR__.'/../../../autoload.php')) {
 
 use Symfony\Component\Console\Application;
 use Machinjiri\Installer\Commands\InstallCommand;
+use Machinjiri\Installer\VersionManager;
 
-$terminal = new Application('Machinjiri Installer', '1.4.8');
+$terminal = new Application('Machinjiri Installer', VersionManager::installerVersion());
 
 $terminal->addCommand(new InstallCommand());
 

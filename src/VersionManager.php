@@ -2,15 +2,28 @@
 
 namespace Machinjiri\Installer;
 
-class VersionManager {
+use Composer\InstalledVersions;
 
-    public const INSTALLER_VERSION = "1.4.8";
-    public const RECOMMENDED_PHP_VERSION = "8.4.0";
+final class VersionManager
+{
+    public const RECOMMENDED_PHP_VERSION = '8.4.0';
 
-    public static function installable (): array
+    public static function installerVersion(): string
+    {
+        if (InstalledVersions::isInstalled('machinjiri/installer')) {
+            return InstalledVersions::getPrettyVersion('machinjiri/installer') ?? 'dev';
+        }
+
+        return 'dev';
+    }
+
+    /**
+     * @return array{minimum: string, installable: array<string, string>}
+     */
+    public static function installable(): array
     {
         return [
-            'minimum' => '^2.2.6', // minimum installable machinjiri version
+            'minimum' => '^2.2.6',
             'installable' => [
                 '^2.2.6' => "machinjiri v2.2.6",
                 '^2.2.7' => "machinjiri v2.2.7",
@@ -22,9 +35,8 @@ class VersionManager {
         ];
     }
 
-    public static function canInstall(string $version): bool 
+    public static function canInstall(string $version): bool
     {
-        return in_array($version, self::installable());
+        return array_key_exists($version, self::installable()['installable']);
     }
-    
 }

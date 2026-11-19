@@ -4,6 +4,16 @@ This document summarizes the installer capabilities and the improvements in vers
 
 ## Recent improvements
 
+### Installer reliability and maintainability
+
+- Made dry runs validation-only; they no longer create the destination directory or scaffold files.
+- Unified PHP and extension checks with the package requirements, including the selected SQLite or MySQL PDO driver.
+- Made Composer discovery work with local `composer.phar` files and PATH-based executables without shell-quoted command strings.
+- Preserved command-line options while validating unsupported database and starter-kit selections before filesystem changes.
+- Made rollback include a partially executed installation step, preserve projects when `--keep-on-error` is selected, and avoid deleting a destination before the installer has created it.
+- Corrected generated Composer package names and PSR-4 prefixes, and report Git setup failures instead of claiming success.
+- Removed the redundant post-autoload script; Composer's declared executable and plugin command provider remain the supported entry points.
+
 ### Default starter kit
 
 - Replaced the basic installation notice with a responsive welcome dashboard showing project details, readiness status, and first steps.
@@ -31,7 +41,7 @@ The installer supports:
 - SQLite and MySQL database templates
 - Optional Git initialization with `--git`
 - Dry runs with `--dry-run`
-- Composer cache preference with `--prefer-cache`
+- Composer cache configuration through Composer's normal cache behavior
 - Safe handling options for existing directories and failures: `--force` and `--keep-on-error`
 
 Run `machinjiri create --help` for the installed command's complete option list.
@@ -59,13 +69,13 @@ The CLI currently checks for:
 
 - PHP CLI 8.4 or newer
 - Composer 2.x
-- PHP extensions: `json`, `mbstring`, `zip`, `openssl`, `pdo`, `tokenizer`, and `ctype`
+- PHP extensions: `json`, `mbstring`, `zip`, `openssl`, `pdo`, `tokenizer`, `ctype`, and `pdo_sqlite` or `pdo_mysql` for the selected database
 
 Use `php --version`, `php -m`, and `composer --version` to inspect the tools and extensions available to the terminal. The PHP CLI configuration may differ from the PHP installation used by a web server.
 
 ## Common diagnostic commands
 
-Preview a setup without creating project files:
+Validate a setup without creating files or directories:
 
 ```bash
 machinjiri create my-app --dry-run --verbose

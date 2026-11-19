@@ -27,8 +27,9 @@ Thank you for considering contributing to Machinjiri! We welcome contributions f
 3. *Open a pull request*: Open a pull request against the `main` branch.
 
 *Code Style*
-- *Follow PSR-12*: Machinjiri follows the PSR-12 coding standard.
-- *Use PHP-CS-Fixer*: Run `php-cs-fixer` to ensure code style consistency.
+- Follow the PHP-FIG PSR-12 coding standard and existing project conventions.
+- Run `composer test` and `composer validate --strict` before opening a pull request.
+- Exercise affected CLI workflows, including non-interactive and dry-run modes when changing installation behavior.
 
 *Commit Messages*
 - *Use imperative mood*: Write commit messages in the imperative mood (e.g., "Fix bug" instead of "Fixed bug").
