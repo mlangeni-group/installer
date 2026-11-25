@@ -128,7 +128,7 @@ class Installer
         if (!is_string($this->options['version']) || trim($this->options['version']) === '') {
             throw new \InvalidArgumentException('A Machinjiri framework version is required.');
         }
-        if (!in_array($this->options['database'], ['sqlite', 'mysql'], true)) {
+        if (!in_array($this->options['database'], VersionManager::supportedDatabaseDrivers(), true)) {
             throw new \InvalidArgumentException('Database must be either "sqlite" or "mysql".');
         }
         if (!is_string($this->options['starter']) || !array_key_exists($this->options['starter'], StarterkitManager::startKits())) {
@@ -195,8 +195,8 @@ class Installer
           'storage/cache',
           'storage/logs',
           'app',
-          'app/Controllers',
-          'app/Middleware',
+          'app/Http/Controllers',
+          'app/Http/Middleware',
           'app/Models',
           'app/Providers',
           'app/Queue/Drivers',
@@ -376,6 +376,7 @@ class Installer
         $config = match ($this->options['database']) {
             'sqlite' => Root::sqliteEnvTemplate(),
             'mysql' => Root::mysqlEnvTemplate(),
+            'pgsql' => Root::pgsqlEnvTemplate(),
         };
         
         if (!is_file($envPath)) {
@@ -437,6 +438,7 @@ class Installer
         $write($this->getCoreConfigDir() . '/ldap.php', ConfigFiles::ldapConfigurationTemplate());
         $write($this->getCoreConfigDir() . '/redis.php', ConfigFiles::redisConfigurationTemplate());
         $write($this->getCoreConfigDir() . '/sms.php', ConfigFiles::smsConfigurationTemplate());
+        $write($this->getCoreConfigDir() . '/chat.php', ConfigFiles::chatConfigurations());
         
         /* Database Files */
         $write($this->projectDir . '/database/cache-prefetch-db.php', Database::dbCachePrefetchTemplate());

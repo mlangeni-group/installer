@@ -45,7 +45,7 @@ class InstallerLogger
     public function error(string $message, ?\Throwable $exception = null): void
     {
         $this->log('ERROR', $message);
-        $this->io->writeln("<fg=red>✗</> {$message}");
+        $this->io->writeln("<fg=red>Error</> {$message}");
 
         if ($exception) {
             $this->logException($exception);

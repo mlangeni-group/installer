@@ -51,7 +51,7 @@ class InstallCommand extends Command
             ->addOption('git', null, InputOption::VALUE_NONE, 'Initialize Git and create an initial commit')
             ->addOption('starter', null, InputOption::VALUE_REQUIRED, 'Starter kit', null, array_keys(StarterkitManager::startKits()))
             ->addOption('prefer-cache', null, InputOption::VALUE_NONE, 'Deprecated compatibility option; Composer manages its cache automatically')
-            ->addOption('database', null, InputOption::VALUE_REQUIRED, 'Database driver', null, ['sqlite', 'mysql'])
+            ->addOption('database', null, InputOption::VALUE_REQUIRED, 'Database driver', null, VersionManager::supportedDatabaseDrivers())
             ->addOption('description', null, InputOption::VALUE_REQUIRED, 'Project description')
             ->addOption('company', null, InputOption::VALUE_REQUIRED, 'Company or organization name')
             ->addOption('keep-on-error', null, InputOption::VALUE_NONE, 'Keep a partially created directory if installation fails');
@@ -97,7 +97,7 @@ class InstallCommand extends Command
             return Command::FAILURE;
         }
 
-        if ((file_exists($targetDir) || is_link($targetDir)) && !is_dir($targetDir)) {
+        if ((is_file($targetDir) || is_link($targetDir)) && !is_dir($targetDir)) {
             $io->error("The destination exists and is not a directory: {$targetDir}");
             return Command::FAILURE;
         }
@@ -325,7 +325,7 @@ class InstallCommand extends Command
 
     private function displayWelcome(SymfonyStyle $io, OutputInterface $output): void
     {
-        $io->title('Machinjiri project installer');
+        $io->title('Machinjiri project installer - Cinnamon');
         $io->text([
             'Create a new application with a guided setup or a repeatable command.',
             '<info>machinjiri create --help</> shows all options.',
