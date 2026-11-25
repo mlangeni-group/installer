@@ -71,7 +71,7 @@ vendor/bin/machinjiri create my-app
 With the global installation, start the guided setup:
 
 ```bash
-machinjiri create
+vendor/bin/machinjiri create my-app
 ```
 
 Follow the prompts to choose a project name, Machinjiri version, database, development dependencies, and starter kit. The installer uses the current directory as the parent of the new project.
@@ -79,7 +79,7 @@ Follow the prompts to choose a project name, Machinjiri version, database, devel
 Or provide a project directory name:
 
 ```bash
-machinjiri create my-app
+machinjiri create
 ```
 
 When installation completes, enter the project directory and follow the quick-start instructions printed by the installer:
