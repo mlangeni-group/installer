@@ -325,7 +325,7 @@ class InstallCommand extends Command
 
     private function displayWelcome(SymfonyStyle $io, OutputInterface $output): void
     {
-        $io->title('Machinjiri project installer');
+        $io->title('Machinjiri project installer - Cinnamon');
         $io->text([
             'Create a new application with a guided setup or a repeatable command.',
             '<info>machinjiri create --help</> shows all options.',
