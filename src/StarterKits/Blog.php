@@ -21,7 +21,7 @@ class Blog
           'template' => self::BlogTemplate(),
         ],
       'home-controller' => [
-          'file' => '/app/Controllers/BlogController.php',
+          'file' => '/app/Http/Controllers/BlogController.php',
           'template' => self::HomeControllerTemplate(),
         ],
       'layout' => [
@@ -43,7 +43,7 @@ class Blog
 <?php
 
 use Mlangeni\Machinjiri\Core\Routing\Router;
-use App\Controllers\BlogController;
+use App\Http\Controllers\BlogController;
 /**
  * Web Routes
  * Define your web routes here.
@@ -65,7 +65,7 @@ PHP;
   private static function HomeControllerTemplate(): string { return <<<PHP
 <?php
 
-namespace App\Controllers;
+namespace App\Http\Controllers;
 
 use Mlangeni\Machinjiri\Core\Artisans\Base\AbstractController;
 use Mlangeni\Machinjiri\Core\Http\HttpRequest;

@@ -23,7 +23,7 @@ class DefaultKit
           'template' => self::WelcomeTemplate(),
         ],
       'home-controller' => [
-          'file' => '/app/Controllers/HomeController.php',
+          'file' => '/app/Http/Controllers/HomeController.php',
           'template' => self::HomeControllerTemplate(),
         ],
       'style' => [
@@ -41,7 +41,7 @@ class DefaultKit
 <?php
 
 use Mlangeni\Machinjiri\Core\Routing\Router;
-use App\Controllers\HomeController;
+use App\Http\Controllers\HomeController;
 
 /**
  * Web Routes
@@ -65,7 +65,7 @@ PHP;
   private static function HomeControllerTemplate(): string { return <<<PHP
 <?php
 
-namespace App\Controllers;
+namespace App\Http\Controllers;
 
 use Mlangeni\Machinjiri\Core\Artisans\Base\AbstractController;
 use Mlangeni\Machinjiri\Core\Http\HttpRequest;
@@ -1335,6 +1335,7 @@ CSS;
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#f5f6fa">
     <title>Machinjiri - Installation complete</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:3000/src/img/favicon-32x32.png">
     <script>
         try {
             const theme = localStorage.getItem('machinjiri-theme');

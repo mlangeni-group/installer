@@ -66,12 +66,17 @@ final readonly class ProjectCreationOptions
 
         $database = $input->getOption('database');
         if ($database === null && !$noInteraction) {
-            $database = $io->choice('Database driver', ['sqlite' => 'SQLite', 'mysql' => 'MySQL'], 'sqlite');
+            $database = $io->choice('Database driver', [
+                'sqlite' => 'SQLite Database', 
+                'mysql'  => 'MySQL Database',
+                'pgsql'  => 'Postgres Database'
+            ],
+            'sqlite');
         } else {
             $database ??= 'sqlite';
         }
-        if (!in_array($database, ['sqlite', 'mysql'], true)) {
-            throw new InvalidArgumentException('Database must be either "sqlite" or "mysql".');
+        if (!in_array($database, VersionManager::supportedDatabaseDrivers(), true)) {
+            throw new InvalidArgumentException('Database driver currently not supported. Supported drivers: sqlite, mysql, pgsql, mongodb, custom');
         }
 
         if ($input->getOption('dev') && $input->getOption('no-dev')) {

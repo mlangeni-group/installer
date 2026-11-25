@@ -4,6 +4,47 @@ namespace Machinjiri\Installer\Stubs;
 
 class ConfigFiles {
 
+    public static function chatConfigurations() { return <<<'PHP'
+<?php
+
+/**
+ * Chat Configuration
+ * 
+ * This configuration file defines the settings for Chat Service Transports (whatsapp, facebook, tiktok, and instagram).
+ */
+
+return [
+    /**
+    'default' => 'whatsapp',
+    'transports' => [
+        'facebook' => [
+            'driver' => 'facebook',
+            'page_id' => env("FACEBOOK_PAGE_ID"),
+            'access_token' => env("FACEBOOK_PAGE_ACCESS_TOKEN"),
+            'api_version' => 'v22.0',
+        ],
+        'whatsapp' => [
+            'driver' => 'whatsapp',
+            'phone_number_id' => env('WHATSAPP_PHONE_NUMBER_ID', null),
+            'access_token' => env('WHATSAPP_ACCESS_TOKEN'),
+            'api_version' => 'v22.0',
+        ],
+        'instagram' => [
+            'driver' => 'instagram',
+            'account_id' => env("INSTAGRAM_ACCOUNT_ID"),
+            'access_token' => env("INSTAGRAM_ACCESS_TOKEN"),
+            'api_version' => 'v22.0',
+        ],
+        'tiktok' => [
+            'driver' => 'tiktok',
+            'access_token' => env("TIKTOK_ACCESS_TOKEN"),
+        ],
+    ],
+    */
+];
+PHP;
+    }
+
     public static function smsConfigurationTemplate() {return <<<'PHP'
 <?php
 
@@ -838,13 +879,16 @@ PHP;
   |--------------------------------------------------------------------------
   */
 return [
-  'default' => 'sqlite',
-  'prefetch' => env('DB_PREFETCH', false),
+  /** The default database driver the system to use */
+  'default'     => 'sqlite',
+  /** Enable or disable database Prefetch */
+  'prefetch'    => env('DB_PREFETCH', false),
+
   'connections' => [
     'sqlite' => [
-        'driver' => 'sqlite',
-        'database' => env('DB_DATABASE', 'database/database.sqlite'),
-        'prefix' => '',
+        'driver'                  => 'sqlite',
+        'database'                => env('DB_DATABASE', 'database/database.sqlite'),
+        'prefix'                  => '',
         'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
     ],
   ]
@@ -859,21 +903,56 @@ PHP,
   |--------------------------------------------------------------------------
   */
 return [
-  'default' => 'mysql',
-  'prefetch' => env('DB_PREFETCH', false),
+  /** The default database driver the system to use */
+  'default'         => 'mysql',
+  /** Enable or disable database Prefetch */
+  'prefetch'        => env('DB_PREFETCH', false),
+
   'connections' => [
     'mysql' => [
-        'driver' => 'mysql',
-        'host' => env('DB_HOST', null),
-        'username' => env('DB_USERNAME', null),
-        'password' => env('DB_PASSWORD', null),
-        'database' => env('DB_DATABASE', null),
-        'port' => env('DB_PORT', 3306),
-        'charset' => env('DB_CHARSET', 'utf8'),
+        'driver'    => 'mysql',
+        'host'      => env('DB_HOST', null),
+        'username'  => env('DB_USERNAME', null),
+        'password'  => env('DB_PASSWORD', null),
+        'database'  => env('DB_DATABASE', null),
+        'port'      => env('DB_PORT', 3306),
+        'charset'   => env('DB_CHARSET', 'utf8'),
+        'options'   => [],
+        'replicas'  => [],
+        'shards'    => [],
     ],
   ]
 ];
-PHP,   
+PHP,
+            "pgsql" => <<<'PHP'
+<?php
+
+/*
+  |--------------------------------------------------------------------------
+  | Postgres Database Configuration
+  |--------------------------------------------------------------------------
+  */
+return [
+  /** The default database driver the system to use */
+  'default'         => 'pgsql',
+  /** Enable or disable database Prefetch */
+  'prefetch'        => env('DB_PREFETCH', false),
+
+  'connections' => [
+    'pgsql' => [
+        'driver'    => 'pgsql',
+        'host'      => env('DB_HOST', null),
+        'username'  => env('DB_USERNAME', null),
+        'password'  => env('DB_PASSWORD', null),
+        'database'  => env('DB_DATABASE', null),
+        'port'      => env('DB_PORT', 3306),
+        'options'   => [],
+        'replicas'  => [],
+        'shards'    => [],
+    ],
+  ]
+];
+PHP,  
         };
 
   }

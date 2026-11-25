@@ -23,15 +23,9 @@ final class VersionManager
     public static function installable(): array
     {
         return [
-            'minimum' => '^2.2.6',
+            'minimum' => '^2.3.5',
             'installable' => [
-                '^2.2.6' => "Machinjiri v2.2.6",
-                '^2.2.7' => "Machinjiri v2.2.7",
-                '^2.2.8' => "Machinjiri v2.2.8",
-                '^2.2.9' => "Machinjiri v2.2.9",
-                '^2.3.1' => "Machinjiri v2.3.1",
-                '^2.3.2' => "Machinjiri v2.3.2",
-                '^2.3.3' => "Machinjiri v2.3.3",
+                '^2.3.5' => "Machinjiri v2.3.5"
             ]
         ];
     }
@@ -39,5 +33,10 @@ final class VersionManager
     public static function canInstall(string $version): bool
     {
         return array_key_exists($version, self::installable()['installable']);
+    }
+
+    public static function supportedDatabaseDrivers(): array 
+    {
+        return ['sqlite', 'mysql', 'pgsql'];
     }
 }

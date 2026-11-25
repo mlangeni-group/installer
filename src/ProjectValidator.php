@@ -141,6 +141,7 @@ class ProjectValidator
         $extension = match ($database) {
             'sqlite' => 'pdo_sqlite',
             'mysql' => 'pdo_mysql',
+            'pgsql' => 'pdo_pgsql',
             default => throw new \InvalidArgumentException("Unsupported database driver: {$database}"),
         };
 
@@ -186,7 +187,7 @@ class ProjectValidator
             if ($status) {
                 $this->io->writeln("<fg=green>✓</> {$name}");
             } else {
-                $this->io->writeln("<fg=red>✗</> {$name}");
+                $this->io->writeln("<fg=red>Error</> {$name}");
             }
         }
     }

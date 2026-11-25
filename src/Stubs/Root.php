@@ -13,7 +13,7 @@ ENV;
     }
 
     public static function mysqlEnvTemplate(): string { return <<<ENV
-# Database Configuration (MYSQL, PostGres, etc)
+# Database Configuration for MYSQL
 # ------------------------------------------------
 DB_CONNECTION=mysql
 DB_HOST=host-name-here
@@ -22,6 +22,18 @@ DB_PASSWORD=password-here
 DB_DATABASE=database-name-here
 DB_PORT=3306
 DB_CHARSET=utf8
+ENV;    
+    }
+
+        public static function pgsqlEnvTemplate(): string { return <<<ENV
+# Database Configuration for PostGres
+# ------------------------------------------------
+DB_CONNECTION=pgsql
+DB_HOST=host-name-here
+DB_USERNAME=username-here
+DB_PASSWORD=password-here
+DB_DATABASE=database-name-here
+DB_PORT=
 ENV;    
     }
 
