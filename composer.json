@@ -3,7 +3,6 @@
   "description": "Installer for Machinjiri PHP Framework",
   "type": "composer-plugin",
   "license": "MIT",
-  "version": "1.5.0",
   "authors": [
     {
       "name": "Precious Lyson",
